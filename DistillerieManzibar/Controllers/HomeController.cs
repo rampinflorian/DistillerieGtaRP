@@ -30,6 +30,7 @@ namespace DistillerieManzibar.Controllers
             _customQuery = customQuery;
         }
 
+        [Route("", Name = "home.index")]
         public async Task<IActionResult> Index()
         {
             var cars = await _context.Car.Include(m => m.ApplicationUser).ToListAsync();

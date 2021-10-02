@@ -1,0 +1,35 @@
+name: CI
+
+on: 
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Dotnet Publish
+      run: dotnet publish -c Release -o deploy
+    - name: Copy via ssh
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        local: /home/runner/work/DistillerieManzibar/DistillerieManzibar/deploy/
+        remote: ${{ secrets.REMOTE_TARGET }}
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        password: ${{ secrets.REMOTE_PASSWORD }}
+    - name: Run SSH command
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        command: sudo service deferat start
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        password: ${{ secrets.REMOTE_PASSWORD }} 

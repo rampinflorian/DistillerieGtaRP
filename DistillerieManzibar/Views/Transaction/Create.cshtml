@@ -1,0 +1,43 @@
+@using DistillerieManzibar.Enums
+@model DistillerieManzibar.Models.Transaction
+
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="shadow p-3 mb-5 bg-light rounded">
+
+            <h1>Création</h1>
+
+            <h4>Nouvelle transaction</h4>
+            <hr/>
+
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="LiquidCategory" class="control-label"></label>
+                    <select asp-for="LiquidCategory" asp-items="@Html.GetEnumSelectList<LiquidCategory>()" class="form-control"></select>
+                    <span asp-validation-for="LiquidCategory" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Destination" class="control-label"></label>
+                    <select asp-for="Destination" asp-items="@Html.GetEnumSelectList<Destination>()" class="form-control"></select>
+                    <span asp-validation-for="Destination" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Quantity" class="control-label"></label>
+                    <input asp-for="Quantity" class="form-control"/>
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+                <div class="form-group ">
+                    <input type="submit" value="Ajouter" class="btn btn-primary"/>
+                </div>
+            </form>
+            <div>
+                <a asp-action="Index">Retour</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+﻿@using DistillerieManzibar.CustomQuery
+@{
+    ViewData["Title"] = "Dashboard";
+    IEnumerable<TransactionCustomQuery> transactionWeek = ViewBag.TransactionWeek;
+}
+
+@section Styles
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+}
+
+<div class="shadow p-3 mb-5 bg-light rounded">
+    <h3>Historique transactions sur 7 jours</h3><br/>
+
+    <div class="row">
+        <div class="col-4">
+            <h4>Répartition</h4>
+            <canvas id="myChart" height="115" width="230" style="display: block; width: 230px; height: 115px;"></canvas>
+        </div>
+        <div class="col-8">
+            <h4>Evolution</h4>
+            <canvas id="myChartLine" height="115" width="230" style="display: block; width: 230px; height: 115px;"></canvas>
+        </div>
+    </div>
+</div>
+<div class="shadow p-3 mb-5 bg-light rounded">
+    <div class="row">
+        <div class="col-4">
+            <h4 class="mb-3">Répartition des véhicules</h4>
+            Véhicules libres : <span class="badge badge-success">@ViewBag.CarsDictionary["Free"]</span><br/>
+            Véhicules utilisés : <span class="badge badge-danger">@ViewBag.CarsDictionary["Used"]</span>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Export', 'Stock'],
+                datasets: [{
+                    label: 'Répartition',
+                    data: [@ViewBag.TransactionDictionary["transactionHistoryExport"], @ViewBag.TransactionDictionary["transactionHistoryStock"]],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+       
+        var ctxLine = document.getElementById('myChartLine').getContext('2d');
+        var myChartLine = new Chart(ctxLine, {
+            type: 'line',
+            data: {
+                labels: ["j-7", "j-6", "j-5", "j-4", "j-3", "j-2", "j-1", "j-0"],
+                datasets: [{
+                  label: 'Transactions totales',
+                  data: [@(transactionWeek.FirstOrDefault(m => m.CreatedAt == DateTime.Today.AddDays(-7))?.Quantity ?? 0),
+                  @(transactionWeek.FirstOrDefault(m => m.CreatedAt == DateTime.Today.AddDays(-6))?.Quantity ?? 0),
+                  @(transactionWeek.FirstOrDefault(m => m.CreatedAt == DateTime.Today.AddDays(-5))?.Quantity ?? 0),
+                  @(transactionWeek.FirstOrDefault(m => m.CreatedAt == DateTime.Today.AddDays(-4))?.Quantity ?? 0),
+                  @(transactionWeek.FirstOrDefault(m => m.CreatedAt == DateTime.Today.AddDays(-3))?.Quantity ?? 0),
+                  @(transactionWeek.FirstOrDefault(m => m.CreatedAt == DateTime.Today.AddDays(-2))?.Quantity ?? 0),
+                  @(transactionWeek.FirstOrDefault(m => m.CreatedAt == DateTime.Today.AddDays(-1))?.Quantity ?? 0),
+                  @(transactionWeek.FirstOrDefault(m => m.CreatedAt > DateTime.Today)?.Quantity ?? 0),
+                   ],
+                  fill: true,
+                  borderColor: 'rgb(75, 192, 192)',
+                  tension: 0.1
+                }],
+            },
+            options: {
+                	scales: {
+                    	yAxes: [{
+                        	ticks: {
+                            	beginAtZero: true
+                        	}
+                    	}]
+                	}
+            	}       
+        });
+
+    </script>
+}

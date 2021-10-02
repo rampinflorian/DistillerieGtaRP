@@ -18,14 +18,6 @@ jobs:
         dotnet-version: 5.0.x
     - name: Dotnet Publish
       run: dotnet publish -c Release -o deploy
-    - name: Copy via ssh
-      uses: garygrossgarten/github-action-scp@release
-      with:
-        local: /home/runner/work/DistillerieManzibar/DistillerieManzibar/deploy/
-        remote: ${{ secrets.REMOTE_TARGET }}
-        host: ${{ secrets.REMOTE_HOST }}
-        username: ${{ secrets.REMOTE_USER }}
-        password: ${{ secrets.REMOTE_PASSWORD }}
     - name: Run SSH command
       uses: garygrossgarten/github-action-scp@release
       with:

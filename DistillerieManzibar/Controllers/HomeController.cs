@@ -16,7 +16,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DistillerieManzibar.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -29,7 +28,7 @@ namespace DistillerieManzibar.Controllers
             _context = context;
             _customQuery = customQuery;
         }
-
+        [Authorize]
         [Route("", Name = "home.index")]
         public async Task<IActionResult> Index()
         {

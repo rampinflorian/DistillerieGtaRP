@@ -53,7 +53,7 @@ namespace DistillerieManzibar.Controllers
             ViewBag.TransactionDictionary = transactionHistoryDictionary;
 
             
-            var sqlTransaction = "SELECT CreatedAt as CreatedAt, SUM(Quantity) as Quantity FROM \"Transaction\" GROUP BY DATE(CreatedAt) ORDER BY CreatedAt DESC LIMIT 7";
+            var sqlTransaction = "SELECT TOP (7) SUM(Quantity) as Quantity, CONVERT(DATE,CreatedAt) as CreatedAt FROM [db_distilleriemanzibar_dev].[dbo].[Transaction] GROUP BY CONVERT(DATE,CreatedAt) ORDER BY CONVERT(DATE,CreatedAt)";
             var transactionWeek = await _customQuery.QueryAsync<TransactionCustomQuery>(sqlTransaction);
 
             ViewBag.TransactionWeek = transactionWeek;

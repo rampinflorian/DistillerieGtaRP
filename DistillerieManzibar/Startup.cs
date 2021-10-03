@@ -22,7 +22,7 @@ namespace DistillerieManzibar
         public void ConfigureServices(IServiceCollection services)
         {
             #if DEBUG
-            var connectionString = Configuration.GetConnectionString("DefaultConnectionFromDevToProd");
+            var connectionString = Configuration.GetConnectionString("DefaultConnectionDev");
             #else
             var connectionString = Configuration.GetConnectionString("DefaultConnectionProd");
             #endif

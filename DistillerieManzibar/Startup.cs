@@ -21,10 +21,19 @@ namespace DistillerieManzibar
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #if DEBUG
+            var connectionString = Configuration.GetConnectionString("DefaultConnectionFromDevToProd");
+            #else
+            var connectionString = Configuration.GetConnectionString("DefaultConnectionProd");
+            #endif
+            
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+                options.UseSqlServer(connectionString));
+            // services.AddDatabaseDeveloperPageExceptionFilter();
+            // services.AddDbContext<ApplicationDbContext>(options =>
+            //     options.UseSqlite(
+            //         Configuration.GetConnectionString("DefaultConnection")));
+            // services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

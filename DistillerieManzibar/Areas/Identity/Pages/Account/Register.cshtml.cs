@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using DistillerieManzibar.Enums;
 using DistillerieManzibar.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -86,7 +87,8 @@ namespace DistillerieManzibar.Areas.Identity.Pages.Account
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName,
-                    LastName = Input.LastName.ToUpper(), EmailConfirmed = true
+                    LastName = Input.LastName.ToUpper(), EmailConfirmed = true,
+                    AccountStatus = AccountStatus.Inactive
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

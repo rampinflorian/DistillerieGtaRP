@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using DistillerieManzibar.Enums;
 using Microsoft.AspNetCore.Identity;
 
 namespace DistillerieManzibar.Models
@@ -18,5 +19,7 @@ namespace DistillerieManzibar.Models
         public int Percentage { get; set; }
         [Display(Name = "Dernier payement")]
         public DateTime LastPayementAt { get; set; }
+
+        public AccountStatus AccountStatus { get; set; }
     }
 }

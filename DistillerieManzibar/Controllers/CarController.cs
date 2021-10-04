@@ -11,8 +11,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DistillerieManzibar.Controllers
 {
-    [Authorize]
-    [Route("cars")]
+    [Authorize(Roles = ("Boss,Employee"))]    [Route("cars")]
     public class CarController : Controller
     {
         private readonly ApplicationDbContext _context;

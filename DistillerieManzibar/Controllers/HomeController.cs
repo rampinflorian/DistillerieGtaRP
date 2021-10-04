@@ -28,8 +28,7 @@ namespace DistillerieManzibar.Controllers
             _context = context;
             _customQuery = customQuery;
         }
-        [Authorize]
-        [Route("", Name = "home.index")]
+        [Authorize(Roles = ("Boss,Employee"))]        [Route("", Name = "home.index")]
         public async Task<IActionResult> Index()
         {
             var cars = await _context.Car.Include(m => m.ApplicationUser).ToListAsync();

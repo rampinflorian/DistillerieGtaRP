@@ -10,8 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DistillerieManzibar.Controllers
 {
-    [Authorize]
-    [Route("transactions")]
+    [Authorize(Roles = ("Boss,Employee"))]    [Route("transactions")]
     public class TransactionController : Controller
     {
         private readonly ApplicationDbContext _context;

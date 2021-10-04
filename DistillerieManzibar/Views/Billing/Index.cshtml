@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using DistillerieManzibar.Enums
+@using DistillerieManzibar.Helpers
 @model List<DistillerieManzibar.Models.ApplicationUser>
 @inject UserManager<ApplicationUser> UserManager
 
@@ -37,7 +39,13 @@
                 var roles = await UserManager.GetRolesAsync(applicationUser);
                 <tr>
                     <td class="text-center">
-                        @applicationUser.FullName() <i>(@foreach(var role in roles) {@role})</i>
+                        @applicationUser.FullName() <i>@foreach (var role in roles)
+                                                        {
+                                                            Enum.TryParse(role, out ApplicationRole applicationRole) ;
+                                                            var displayApplicationRole = EnumHelper<ApplicationRole>.GetDisplayValue(applicationRole);
+                                                            <i>(@displayApplicationRole)</i>
+                                                        }
+                        </i>
                     </td>
                     <td class="text-center">
                         <span class='badge badge-info'>@applicationUser.LastPayementAt.ToString("d")</span>

@@ -63,7 +63,7 @@
                             var price = applicationUser.Sold * ((decimal)applicationUser.Percentage / 100);
                             price = Math.Round(price, 0);
                         }
-                        <span class='badge badge-success'>@price $</span>
+                        <span class='badge badge-success'>$ @price</span>
                     </td>
                     
                     @if(User.IsInRole("Boss")) {

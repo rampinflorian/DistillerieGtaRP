@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using DistillerieManzibar.Data;
 using DistillerieManzibar.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,17 +30,15 @@ namespace DistillerieManzibar
             
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
-            // services.AddDatabaseDeveloperPageExceptionFilter();
-            // services.AddDbContext<ApplicationDbContext>(options =>
-            //     options.UseSqlite(
-            //         Configuration.GetConnectionString("DefaultConnection")));
-            // services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
+            // AUTO WIRING
             services.AddScoped<Data.Dapper.CustomQuery>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

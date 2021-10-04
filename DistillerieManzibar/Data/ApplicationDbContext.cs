@@ -13,6 +13,7 @@ namespace DistillerieManzibar.Data
         public DbSet<Transaction> Transaction { get; set; }
         public DbSet<Car> Car { get; set; }
         public DbSet<CarLog> CarLogs { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
     }
 }

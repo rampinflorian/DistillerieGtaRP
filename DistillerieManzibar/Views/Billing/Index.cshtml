@@ -1,0 +1,66 @@
+﻿@model List<DistillerieManzibar.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Facturation";
+    Layout = "_Layout";
+}
+
+<div class="shadow p-3 mb-5 bg-light rounded">
+    <h2>@ViewBag.Title</h2>
+    <div class="overflow-auto" style="max-height: 300px;">
+        <table class="table ">
+            <thead>
+            <tr>
+                <th class="text-center">
+                    Employé
+                </th>
+                <th class="text-center">
+                    Paiement
+                </th>
+                <th class="text-center">
+                    Solde Livraison
+                </th>
+                <th class="text-center">
+                    Taux
+                </th>
+                <th class="text-center">
+                    Salaire
+                </th>
+                <th class="text-center"></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var applicationUser in Model)
+            {
+                <tr>
+                    <td class="text-center">
+                        @applicationUser.FullName()
+                    </td>
+                    <td class="text-center">
+                        <span class='badge badge-info'>@applicationUser.LastPayement.ToString("d")</span>
+                        
+                    </td>
+                    <td class="text-center">
+                        <span class='badge badge-primary'>@applicationUser.Sold</span>
+                    </td>
+                    <td class="text-center">
+                        <span class='badge badge-secondary'>@applicationUser.Percentage %</span>
+                        
+                    </td>
+                    <td class="text-center">
+                        @{
+                            var price = applicationUser.Sold * ((decimal)applicationUser.Percentage / 100);
+                            price = Math.Round(price, 0);
+                        }
+                        <span class='badge badge-success'>@price $</span>
+                    </td>
+                    
+                    @if(User.IsInRole("Boss")) {
+                        <td class="text-center"><a asp-action="Payment" asp-route-applicationUserId="@applicationUser.Id"><button class="btn btn-success btn-sm">Payer</button></a></td>
+                    }
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

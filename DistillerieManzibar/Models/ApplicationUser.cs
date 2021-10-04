@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace DistillerieManzibar.Models
 {
@@ -13,5 +14,6 @@ namespace DistillerieManzibar.Models
         }
 
         public int Percentage { get; set; }
+        public DateTime LastPayement { get; set; }
     }
 }

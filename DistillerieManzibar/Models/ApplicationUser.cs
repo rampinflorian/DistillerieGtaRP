@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace DistillerieManzibar.Models
@@ -13,7 +14,9 @@ namespace DistillerieManzibar.Models
             return $"{FirstName} {LastName}";
         }
 
+        [Display(Name = "Taux")]
         public int Percentage { get; set; }
+        [Display(Name = "Dernier payement")]
         public DateTime LastPayementAt { get; set; }
     }
 }

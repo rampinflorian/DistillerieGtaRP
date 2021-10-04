@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DistillerieManzibar.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = ("Boss,Employee"))]
     [Route("billing")]
     public class BillingController : Controller
     {

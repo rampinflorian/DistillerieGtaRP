@@ -14,6 +14,6 @@ namespace DistillerieManzibar.Models
         }
 
         public int Percentage { get; set; }
-        public DateTime LastPayement { get; set; }
+        public DateTime LastPayementAt { get; set; }
     }
 }

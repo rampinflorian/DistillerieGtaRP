@@ -47,7 +47,7 @@ namespace DistillerieManzibar.Controllers
             }
 
             applicationUser.Sold = 0;
-            applicationUser.LastPayement = DateTime.Now;
+            applicationUser.LastPayementAt = DateTime.Now;
             
             _context.Update(applicationUser);
             await _context.SaveChangesAsync();

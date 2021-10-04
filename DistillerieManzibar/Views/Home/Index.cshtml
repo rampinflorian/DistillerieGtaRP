@@ -79,7 +79,7 @@
                   @(transactionWeek.FirstOrDefault(m => m.CreatedAt == DateTime.Today.AddDays(-3))?.Quantity ?? 0),
                   @(transactionWeek.FirstOrDefault(m => m.CreatedAt == DateTime.Today.AddDays(-2))?.Quantity ?? 0),
                   @(transactionWeek.FirstOrDefault(m => m.CreatedAt == DateTime.Today.AddDays(-1))?.Quantity ?? 0),
-                  @(transactionWeek.FirstOrDefault(m => m.CreatedAt > DateTime.Today)?.Quantity ?? 0),
+                  @(transactionWeek.FirstOrDefault(m => m.CreatedAt == DateTime.Today)?.Quantity ?? 0),
                    ],
                   fill: true,
                   borderColor: 'rgb(75, 192, 192)',

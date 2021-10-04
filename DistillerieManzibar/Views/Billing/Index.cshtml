@@ -1,4 +1,6 @@
-﻿@model List<DistillerieManzibar.Models.ApplicationUser>
+﻿@using Microsoft.AspNetCore.Identity
+@model List<DistillerieManzibar.Models.ApplicationUser>
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewBag.Title = "Facturation";
@@ -32,9 +34,10 @@
             <tbody>
             @foreach (var applicationUser in Model)
             {
+                var roles = await UserManager.GetRolesAsync(applicationUser);
                 <tr>
                     <td class="text-center">
-                        @applicationUser.FullName()
+                        @applicationUser.FullName() <i>(@foreach(var role in roles) {@role})</i>
                     </td>
                     <td class="text-center">
                         <span class='badge badge-info'>@applicationUser.LastPayementAt.ToString("d")</span>

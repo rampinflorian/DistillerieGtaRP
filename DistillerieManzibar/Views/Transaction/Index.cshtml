@@ -10,63 +10,68 @@
 
 
 <div class="shadow p-3 mb-5 bg-light rounded">
-<h1>Transactions</h1>
-
-<p class="float-right">
-    <a  asp-action="Create"><button class="btn btn-success btn-sm">Ajouter</button></a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ApplicationUser)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LiquidCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Destination)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @item.ApplicationUser.FullName()
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LiquidCategory)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Destination)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                
-                @if (item.ApplicationUser == currentUser)
-                {
-                    <a asp-action="Edit" asp-route-id="@item.TransactionId"><button class="btn btn-primary btn-sm">Editer</button></a>
-                    <a asp-action="Delete" asp-route-id="@item.TransactionId"><button class="btn btn-danger btn-sm">Supprimer</button></a>
-
-                }
-
-            </td>
-        </tr>
-}
-    
-    </tbody>
-</table>
+    <h1>Transactions</h1>
+    <div class="d-flex flex-row-reverse">
+        <a asp-action="Create">
+            <button class="btn btn-success btn-sm">Ajouter</button>
+        </a>
+    </div>
+    <div class="overflow-auto" style="max-height: 600px;">
+        
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApplicationUser)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LiquidCategory)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Destination)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @item.ApplicationUser.FullName()
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LiquidCategory)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Destination)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @if (item.ApplicationUser == currentUser)
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.TransactionId">
+                                <button class="btn btn-primary btn-sm">Editer</button>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.TransactionId">
+                                <button class="btn btn-danger btn-sm">Supprimer</button>
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 </div>

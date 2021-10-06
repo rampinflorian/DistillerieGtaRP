@@ -1,0 +1,70 @@
+@model IEnumerable<DistillerieManzibar.Models.Command>
+
+@{
+    ViewData["Title"] = "Commandes";
+}
+
+<div class="shadow p-3 mb-5 bg-light rounded">
+
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="d-flex flex-row-reverse">
+        <a asp-action="Create">
+            <button class="btn btn-success btn-sm">Ajouter</button>
+        </a>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LiquidCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BilledAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryAt)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Company)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LiquidCategory)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BilledAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryAt)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CommandId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.CommandId">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

@@ -4,14 +4,16 @@ using DistillerieManzibar.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DistillerieManzibar.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211004205549_CompanyCommandFixName")]
+    partial class CompanyCommandFixName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -161,7 +163,7 @@ namespace DistillerieManzibar.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime?>("BilledAt")
+                    b.Property<DateTime>("BilledAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("CompanyId")
@@ -170,7 +172,7 @@ namespace DistillerieManzibar.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DeliveryAt")
+                    b.Property<DateTime>("DeliveryAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("LiquidCategory")

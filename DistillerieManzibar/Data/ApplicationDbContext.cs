@@ -14,6 +14,8 @@ namespace DistillerieManzibar.Data
         public DbSet<Car> Car { get; set; }
         public DbSet<CarLog> CarLogs { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Command> Commands { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
     }
 }

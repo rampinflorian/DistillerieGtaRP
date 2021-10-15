@@ -7,6 +7,8 @@ namespace DistillerieManzibar.Enums
         [Display(Name = "Employé")]
         Employee,
         [Display(Name = "Patron")]
-        Boss
+        Boss,
+        [Display(Name = "Chef d'équipe")]
+        Leader
     }
 }

@@ -7,7 +7,9 @@ namespace DistillerieManzibar.Models
     public class Transaction
     {
         public int TransactionId { get; set; }
-        [Required, Display(Name = "Employé")] public ApplicationUser ApplicationUser { get; set; }
+
+        [Required] public string ApplicationUserId { get; set; }
+        [Display(Name = "Employé")] public virtual ApplicationUser ApplicationUser { get; set; }
         [Required, Display(Name = "Type de liquide")] public LiquidCategory LiquidCategory { get; set; }
         [Required, Display(Name = "Destination")] public Destination Destination { get; set; }
         [Required, Display(Name = "Quantité")] public int Quantity { get; set; }

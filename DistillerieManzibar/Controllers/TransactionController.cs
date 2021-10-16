@@ -83,13 +83,13 @@ namespace DistillerieManzibar.Controllers
         [Route("edit/{id:int}", Name = "transaction.edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TransactionId,LiquidCategory,Destination,Quantity")] Transaction transaction)
+        public async Task<IActionResult> Edit(int id, [Bind("TransactionId,LiquidCategory,CreatedAt,ApplicationUserId,Destination,Quantity")] Transaction transaction)
         {
             if (id != transaction.TransactionId)
             {
                 return NotFound();
             }
-
+            
             if (ModelState.IsValid)
             {
                 var applicationUser = await _userManager.GetUserAsync(User);

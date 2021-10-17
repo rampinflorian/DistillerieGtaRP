@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace DistillerieManzibar.Controllers
 {
     [Route("commands")]
+    [Authorize(Roles = "Boss, CoBoss, Leader, Employee")]
+
     public class CommandController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,15 +23,14 @@ namespace DistillerieManzibar.Controllers
         }
 
         [Route("", Name = "command.index")]
-        [Authorize(Roles = "Boss, Employee")]
+
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Commands.Include(c => c.Company);
+            var applicationDbContext = _context.Commands.Include(c => c.Company).OrderByDescending(m => m.CreatedAt);
             return View(await applicationDbContext.ToListAsync());
         }
 
         [Route("create", Name = "command.create")]
-        [Authorize(Roles = "Boss")]
         public IActionResult Create()
         {
             ViewData["CompanyId"] = new SelectList(_context.Companies, "CompanyId", "Name");
@@ -37,7 +38,6 @@ namespace DistillerieManzibar.Controllers
         }
 
         [Route("create", Name = "command.create.post")]
-        [Authorize(Roles = "Boss")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CommandId,LiquidCategory,Quantity,CompanyId")] Command command)
@@ -57,7 +57,6 @@ namespace DistillerieManzibar.Controllers
         }
 
         [Route("edit/{id:int}", Name = "command.edit")]
-        [Authorize(Roles = "Boss")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,10 +74,9 @@ namespace DistillerieManzibar.Controllers
         }
 
         [Route("edit/{id:int}", Name = "command.edit.post")]
-        [Authorize(Roles = "Boss")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CommandId,LiquidCategory,CreatedAt,Quantity,CompanyId")] Command command)
+        public async Task<IActionResult> Edit(int id, [Bind("CommandId,LiquidCategory,DeliveryAt,BilletAt,CreatedAt,Quantity,CompanyId")] Command command)
         {
             ModelState.Remove("CreatedAt");
             ModelState.Remove("BilledAt");
@@ -113,7 +111,6 @@ namespace DistillerieManzibar.Controllers
         }
 
         [Route("delete/{id:int}", Name = "command.delete")]
-        [Authorize(Roles = "Boss")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -133,7 +130,6 @@ namespace DistillerieManzibar.Controllers
         }
 
         [Route("delete/{id:int}", Name = "command.delete.post")]
-        [Authorize(Roles = "Boss")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -147,6 +143,39 @@ namespace DistillerieManzibar.Controllers
         private bool CommandExists(int id)
         {
             return _context.Commands.Any(e => e.CommandId == id);
+        }
+
+        [Route("billed/{id:int}")]
+        [Authorize(Roles = "Boss, CoBoss")]
+
+        public async Task<IActionResult> Billed(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            var command = await _context.Commands.FindAsync(id);
+            command.BilledAt = DateTime.Now;
+            _context.Update(command);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(Index));
+        }
+        [Route("delivery/{id:int}")]
+        public async Task<IActionResult> Delivery(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            var command = await _context.Commands.FindAsync(id);
+            command.DeliveryAt = DateTime.Now;
+            _context.Update(command);
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(Index));
         }
     }
 }

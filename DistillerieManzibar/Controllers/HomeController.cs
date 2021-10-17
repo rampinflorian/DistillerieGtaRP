@@ -28,7 +28,7 @@ namespace DistillerieManzibar.Controllers
             _context = context;
             _customQuery = customQuery;
         }
-        [Authorize(Roles = ("Boss,Employee"))]        
+        [Authorize(Roles = "Boss, CoBoss, Leader, Employee")]
         [Route("", Name = "home.index")]
         public async Task<IActionResult> Index()
         {

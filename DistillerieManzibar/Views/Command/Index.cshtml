@@ -40,7 +40,7 @@
         <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="@(item.BilledAt != null & item.DeliveryAt != null ? "table-success" : "")">
                 <td>
                     @Html.DisplayFor(modelItem => item.LiquidCategory)
                 </td>
@@ -60,8 +60,31 @@
                     @Html.DisplayFor(modelItem => item.Company.Name)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.CommandId">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.CommandId">Delete</a>
+                    @if (User.IsInRole("Boss") && item.BilledAt == null)
+                    {
+                        <a asp-action="Billed" asp-route-id="@item.CommandId">
+                            <button class="btn btn-sm btn-primary"><i class="fas fa-cash-register"></i> Payé</button>
+                        </a>
+                    }
+                    @if (item.DeliveryAt == null)
+                    {
+                        <a asp-action="Delivery" asp-route-id="@item.CommandId">
+                            <button class="btn btn-sm btn-secondary"><i class="fas fa-car-side"></i> Livré</button>
+                        </a>
+                    }
+                    @if (item.DeliveryAt == null || item.BilledAt == null)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.CommandId">
+                            <button class="btn btn-sm btn-primary">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.CommandId">
+                            <button class="btn btn-sm btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </a>
+                    }
                 </td>
             </tr>
         }

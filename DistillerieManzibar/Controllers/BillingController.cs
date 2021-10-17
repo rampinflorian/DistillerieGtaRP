@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DistillerieManzibar.Controllers
 {
-    [Authorize(Roles = ("Boss,Employee"))]
+    [Authorize(Roles = "Boss, CoBoss, Leader, Employee")]
     [Route("billing")]
     public class BillingController : Controller
     {
@@ -29,6 +29,7 @@ namespace DistillerieManzibar.Controllers
             return View(await _context.ApplicationUsers.OrderByDescending(m => m.Sold).ToListAsync());
         }
 
+        [Authorize(Roles = "Boss")]
         [Route("payement/{applicationUserId}", Name = "billing.payement")]
         public async Task<IActionResult> Payment(string applicationUserId)
         {

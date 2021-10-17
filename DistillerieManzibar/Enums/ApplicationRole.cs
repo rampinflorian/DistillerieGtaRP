@@ -9,6 +9,8 @@ namespace DistillerieManzibar.Enums
         [Display(Name = "Patron")]
         Boss,
         [Display(Name = "Chef d'équipe")]
-        Leader
+        Leader,
+        [Display(Name = "Co-Patron")]
+        CoBoss
     }
 }

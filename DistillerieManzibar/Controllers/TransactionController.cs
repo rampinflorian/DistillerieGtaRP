@@ -40,9 +40,9 @@ namespace DistillerieManzibar.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TransactionId,LiquidCategory,Destination,Quantity")] Transaction transaction)
+        public async Task<IActionResult> Create([Bind("TransactionId,LiquidCategory,CreatedAt,ApplicationUserId,Destination,Quantity")] Transaction transaction)
         {
-            ModelState.Remove("ApplicationUser");
+            ModelState.Remove("ApplicationUserId");
             ModelState.Remove("CreatedAt");
             
             if (ModelState.IsValid)

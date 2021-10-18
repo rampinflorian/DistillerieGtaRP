@@ -7,26 +7,30 @@ using Microsoft.EntityFrameworkCore;
 using DistillerieManzibar.Data;
 using DistillerieManzibar.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace DistillerieManzibar.Controllers
 {
     [Route("commands")]
     [Authorize(Roles = "Boss, CoBoss, Leader, Employee")]
-
     public class CommandController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CommandController(ApplicationDbContext context)
+        public CommandController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         [Route("", Name = "command.index")]
-
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Commands.Include(c => c.Company).OrderByDescending(m => m.CreatedAt);
+            var applicationDbContext = _context.Commands
+                .Include(c => c.Company)
+                .Include(m => m.ApplicationUsers)
+                .OrderByDescending(m => m.CreatedAt);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -52,6 +56,7 @@ namespace DistillerieManzibar.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CompanyId"] = new SelectList(_context.Companies, "CompanyId", "Name", command.CompanyId);
             return View(command);
         }
@@ -69,6 +74,7 @@ namespace DistillerieManzibar.Controllers
             {
                 return NotFound();
             }
+
             ViewData["CompanyId"] = new SelectList(_context.Companies, "CompanyId", "Name", command.CompanyId);
             return View(command);
         }
@@ -76,7 +82,9 @@ namespace DistillerieManzibar.Controllers
         [Route("edit/{id:int}", Name = "command.edit.post")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CommandId,LiquidCategory,DeliveryAt,BilletAt,CreatedAt,Quantity,CompanyId")] Command command)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("CommandId,LiquidCategory,DeliveryAt,BilletAt,CreatedAt,Quantity,CompanyId")]
+            Command command)
         {
             ModelState.Remove("CreatedAt");
             ModelState.Remove("BilledAt");
@@ -104,8 +112,10 @@ namespace DistillerieManzibar.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["CompanyId"] = new SelectList(_context.Companies, "CompanyId", "Name", command.CompanyId);
             return View(command);
         }
@@ -145,9 +155,8 @@ namespace DistillerieManzibar.Controllers
             return _context.Commands.Any(e => e.CommandId == id);
         }
 
-        [Route("billed/{id:int}")]
+        [Route("billed/{id:int}", Name = "command.billed")]
         [Authorize(Roles = "Boss, CoBoss")]
-
         public async Task<IActionResult> Billed(int id)
         {
             if (id == 0)
@@ -159,10 +168,11 @@ namespace DistillerieManzibar.Controllers
             command.BilledAt = DateTime.Now;
             _context.Update(command);
             await _context.SaveChangesAsync();
-            
+
             return RedirectToAction(nameof(Index));
         }
-        [Route("delivery/{id:int}")]
+
+        [Route("delivery/{id:int}", Name = "command.delivery")]
         public async Task<IActionResult> Delivery(int id)
         {
             if (id == 0)
@@ -174,7 +184,26 @@ namespace DistillerieManzibar.Controllers
             command.DeliveryAt = DateTime.Now;
             _context.Update(command);
             await _context.SaveChangesAsync();
-            
+
+            return RedirectToAction(nameof(Index));
+        }
+        [Route("delivery-participation/{id:int}", Name = "command.delivery.participation")]
+        public async Task<IActionResult> DeliveryParticipation(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+
+            var command = await _context.Commands.Include(m => m.ApplicationUsers).FirstOrDefaultAsync(m => m.CommandId == id);
+            var applicationUser = await _userManager.GetUserAsync(User);
+
+            if (!command.ApplicationUsers.Any(m => m.Id != applicationUser.Id))
+            {
+                command.ApplicationUsers.Add(applicationUser);
+                _context.Update(command);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
     }

@@ -1,7 +1,12 @@
+@using Microsoft.AspNetCore.Identity
 @model IEnumerable<DistillerieManzibar.Models.Command>
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Commandes";
+    ApplicationUser currentUser = await UserManager.GetUserAsync(User);
+
 }
 
 <div class="shadow p-3 mb-5 bg-light rounded">
@@ -51,10 +56,10 @@
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.BilledAt)
+                    @item.BilledAt?.ToString("g")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DeliveryAt)
+                    @item.DeliveryAt?.ToString("g")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Company.Name)
@@ -63,17 +68,35 @@
                     @if ((User.IsInRole("Boss") || User.IsInRole("CoBoss")) && item.BilledAt == null)
                     {
                         <a asp-action="Billed" asp-route-id="@item.CommandId">
-                            <button class="btn btn-sm btn-primary"><i class="fas fa-cash-register"></i> Payé</button>
+                            <button class="btn btn-sm btn-success" title="Payé">
+                                <i class="fas fa-cash-register"></i>
+                            </button>
                         </a>
                     }
                     @if (item.DeliveryAt == null)
                     {
                         <a asp-action="Delivery" asp-route-id="@item.CommandId">
-                            <button class="btn btn-sm btn-secondary"><i class="fas fa-car-side"></i> Livré</button>
+                            <button class="btn btn-sm btn-warning" title="Livré">
+                                <i class="fas fa-cart-arrow-down"></i>
+                            </button>
                         </a>
                     }
                     @if (item.DeliveryAt == null || item.BilledAt == null)
                     {
+                        @if (!item.ApplicationUsers.Any(m => m.Id == currentUser.Id))
+                        {
+                            <a asp-action="DeliveryParticipation" asp-route-id="@item.CommandId">
+                                <button class="btn btn-sm btn-dark" title="Livreur">
+                                    <i class="fas fa-car-side"></i><i> (@item.ApplicationUsers.Count)</i>
+                                </button>
+                            </a>
+                        }
+                        else
+                        {
+                            <button class="btn btn-sm btn-secondary" title="Livreur" disabled>
+                                <i class="fas fa-car-side"></i><i> (@item.ApplicationUsers.Count)</i>
+                            </button>
+                        }
                         <a asp-action="Edit" asp-route-id="@item.CommandId">
                             <button class="btn btn-sm btn-primary">
                                 <i class="fas fa-pen"></i>
@@ -85,6 +108,24 @@
                             </button>
                         </a>
                     }
+                </td>
+            </tr>
+            <tr class="@(item.BilledAt != null & item.DeliveryAt != null ? "table-success" : "")">
+                <td colspan="7">
+                    <i class="far fa-arrow-alt-circle-up"></i>
+                    <i>
+                        Livreurs :
+
+                        @foreach (ApplicationUser applicationUser in item.ApplicationUsers)
+                        {
+                            @applicationUser.FullName()
+                            @if (!applicationUser.Equals(item.ApplicationUsers.Last()))
+                            {
+                                <i>, &nbsp;</i>
+                            }
+                        }
+                    </i>
+
                 </td>
             </tr>
         }

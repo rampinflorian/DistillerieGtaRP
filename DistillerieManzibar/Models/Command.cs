@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using DistillerieManzibar.Enums;
 
@@ -14,6 +15,9 @@ namespace DistillerieManzibar.Models
         [Display(Name = "Livré le")] public DateTime? DeliveryAt { get; set; }
         [Required] public int CompanyId { get; set; }
         [Display(Name = "Société")] public Company Company { get; set; }
+
+        public ICollection<ApplicationUser> ApplicationUsers { get; set; }
+        
         
     }
 }

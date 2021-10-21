@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 namespace DistillerieManzibar.Controllers
 {
     [Route("commands")]
-    [Authorize(Roles = "Boss, CoBoss, Leader, Employee")]
+    [Authorize(Roles = "Learner, Boss, CoBoss, Leader, Employee")]
     public class CommandController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Microsoft.AspNetCore.Builder;
@@ -23,13 +24,15 @@ namespace DistillerieManzibar
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
         {
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = "";
+            connectionString = env.IsDevelopment() ? Configuration.GetConnectionString("DefaultConnection") : Environment.GetEnvironmentVariable("DATABASE_URL");
 
-            
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            {
+                if (connectionString != null) options.UseSqlServer(connectionString);
+            });
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()

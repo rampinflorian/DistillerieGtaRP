@@ -16,18 +16,21 @@ namespace DistillerieManzibar
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
+            _env = env;
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services, IWebHostEnvironment env)
+        public void ConfigureServices(IServiceCollection services)
         {
             var connectionString = "";
-            connectionString = env.IsDevelopment() ? Configuration.GetConnectionString("DefaultConnection") : Environment.GetEnvironmentVariable("DATABASE_URL");
+            connectionString = _env.IsDevelopment() ? Configuration.GetConnectionString("DefaultConnection") : Environment.GetEnvironmentVariable("DATABASE_URL");
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {

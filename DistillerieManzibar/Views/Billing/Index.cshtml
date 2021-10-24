@@ -7,10 +7,12 @@
 @{
     ViewBag.Title = "Facturation";
     Layout = "_Layout";
+
+    Decimal total = 0;
 }
 
 <div class="shadow p-3 mb-5 bg-light rounded">
-    <h2>@ViewBag.Title</h2>
+    <h2>@ViewBag.Title </h2>
     <div class="overflow-auto" style="max-height: 600px;">
         <table class="table ">
             <thead>
@@ -39,39 +41,54 @@
                 var roles = await UserManager.GetRolesAsync(applicationUser);
                 <tr>
                     <td class="text-center">
-                        @applicationUser.FullName() <i>@foreach (var role in roles)
-                                                        {
-                                                            Enum.TryParse(role, out ApplicationRole applicationRole) ;
-                                                            var displayApplicationRole = EnumHelper<ApplicationRole>.GetDisplayValue(applicationRole);
-                                                            <i>(@displayApplicationRole)</i>
-                                                        }
+                        @applicationUser.FullName()
+                        <i>
+                            @foreach (var role in roles)
+                            {
+                                Enum.TryParse(role, out ApplicationRole applicationRole);
+                                var displayApplicationRole = EnumHelper<ApplicationRole>.GetDisplayValue(applicationRole);
+                                <i>(@displayApplicationRole)</i>
+                            }
                         </i>
                     </td>
                     <td class="text-center">
                         <span class='badge badge-info'>@applicationUser.LastPayementAt.ToString("d")</span>
-                        
+
                     </td>
                     <td class="text-center">
                         <span class='badge badge-primary'>@applicationUser.Sold</span>
                     </td>
                     <td class="text-center">
                         <span class='badge badge-secondary'>@applicationUser.Percentage %</span>
-                        
+
                     </td>
                     <td class="text-center">
                         @{
                             var price = applicationUser.Sold * ((decimal)applicationUser.Percentage / 100);
                             price = Math.Round(price, 0);
+                            total += price;
                         }
                         <span class='badge badge-success'>$ @price</span>
                     </td>
-                    
-                    @if(User.IsInRole("Boss")) {
-                        <td class="text-center"><a asp-action="Payment" asp-route-applicationUserId="@applicationUser.Id"><button class="btn btn-success btn-sm">Payer</button></a></td>
+
+                    @if (User.IsInRole("Boss"))
+                    {
+                        <td class="text-center">
+                            <a asp-action="Payment" asp-route-applicationUserId="@applicationUser.Id">
+                                <button class="btn btn-success btn-sm">Payer</button>
+                            </a>
+                        </td>
                     }
                 </tr>
             }
             </tbody>
+            <tfoot>
+            <tr class="text-right">
+                <td colspan="6" class="mr-5">
+                    <bold>Total à payer </bold><span class='badge badge-warning'>$ @total</span>
+                </td>
+            </tr>
+            </tfoot>
         </table>
     </div>
 </div>

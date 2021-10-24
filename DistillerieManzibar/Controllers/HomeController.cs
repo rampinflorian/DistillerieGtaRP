@@ -54,8 +54,12 @@ namespace DistillerieManzibar.Controllers
             
             var sqlTransaction = "SELECT TOP (7) SUM(Quantity) as Quantity, CONVERT(DATE,CreatedAt) as CreatedAt FROM [Transaction] GROUP BY CONVERT(DATE,CreatedAt) ORDER BY CONVERT(DATE,CreatedAt) DESC";
             var transactionWeek = await _customQuery.QueryAsync<TransactionCustomQuery>(sqlTransaction);
-
             ViewBag.TransactionWeek = transactionWeek;
+
+            var sqlCommand = "SELECT TOP (14) SUM(Quantity) as Quantity, CONVERT(DATE,CreatedAt) as CreatedAt, Company.CompanyId, Company.Name FROM [Commands] as Command LEFT JOIN Companies Company on Command.CompanyId = Company.CompanyId GROUP BY CONVERT(DATE,CreatedAt), Company.CompanyId, Company.Name ORDER BY CONVERT(DATE,CreatedAt) DESC";
+            var commandWeek = await _customQuery.QueryAsync<CommandCustomQuery>(sqlCommand);
+            ViewBag.CommandWeek = commandWeek;
+            
             return View();
         }
 

@@ -198,7 +198,7 @@ namespace DistillerieManzibar.Controllers
             var command = await _context.Commands.Include(m => m.ApplicationUsers).FirstOrDefaultAsync(m => m.CommandId == id);
             var applicationUser = await _userManager.GetUserAsync(User);
 
-            if (!command.ApplicationUsers.Any(m => m.Id != applicationUser.Id))
+            if (command.ApplicationUsers.All(m => m.Id != applicationUser.Id))
             {
                 command.ApplicationUsers.Add(applicationUser);
                 _context.Update(command);

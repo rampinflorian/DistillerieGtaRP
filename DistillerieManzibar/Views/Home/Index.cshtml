@@ -105,7 +105,7 @@
                           @(commandWeek.FirstOrDefault(m => m.CreatedAt.Date == DateTime.Today.AddDays(-3) && m.Name == "Yellow Jack")?.Quantity ?? 0),
                           @(commandWeek.FirstOrDefault(m => m.CreatedAt.Date == DateTime.Today.AddDays(-2) && m.Name == "Yellow Jack")?.Quantity ?? 0),
                           @(commandWeek.FirstOrDefault(m => m.CreatedAt.Date == DateTime.Today.AddDays(-1) && m.Name == "Yellow Jack")?.Quantity ?? 0),
-                          @(commandWeek.FirstOrDefault(m => m.CreatedAt.Date == DateTime.Today && m.Name == "Henn House")?.Quantity ?? 0),
+                          @(commandWeek.FirstOrDefault(m => m.CreatedAt.Date == DateTime.Today && m.Name == "Yellow Jack")?.Quantity ?? 0),
                        ],
                       fill: true,
                       borderColor: 'rgb(255, 255, 0)',

@@ -83,19 +83,21 @@
                     }
                     @if (item.DeliveryAt == null || item.BilledAt == null)
                     {
-                        @if (!item.ApplicationUsers.Any(m => m.Id == currentUser.Id))
+                        @if (item.ApplicationUsers.Any(m => m.Id == currentUser.Id))
                         {
-                            <a asp-action="DeliveryParticipation" asp-route-id="@item.CommandId">
-                                <button class="btn btn-sm btn-dark" title="Livreur">
+                            <a asp-action="DeliveryParticipationRemove" asp-route-id="@item.CommandId">
+                                <button class="btn btn-sm btn-danger" title="Supprimer mivreur">
                                     <i class="fas fa-car-side"></i><i> (@item.ApplicationUsers.Count)</i>
                                 </button>
                             </a>
                         }
                         else
                         {
-                            <button class="btn btn-sm btn-secondary" title="Livreur" disabled>
-                                <i class="fas fa-car-side"></i><i> (@item.ApplicationUsers.Count)</i>
-                            </button>
+                            <a asp-action="DeliveryParticipation" asp-route-id="@item.CommandId">
+                                <button class="btn btn-sm btn-dark" title="Livreur">
+                                    <i class="fas fa-car-side"></i><i> (@item.ApplicationUsers.Count)</i>
+                                </button>
+                            </a>
                         }
                         <a asp-action="Edit" asp-route-id="@item.CommandId">
                             <button class="btn btn-sm btn-primary">

@@ -206,5 +206,25 @@ namespace DistillerieManzibar.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        [Route("delivery-pariticpation-remove/{id:int}", Name = "command.deliery.participation.remove")]
+        public async Task<IActionResult> DeliveryParticipationRemove(int id)
+        {
+            if (id == 0)
+            {
+                return NotFound();
+            }
+            var command = await _context.Commands.Include(m => m.ApplicationUsers).FirstOrDefaultAsync(m => m.CommandId == id);
+            var applicationUser = await _userManager.GetUserAsync(User);
+
+            if (command.ApplicationUsers.Any(m => m.Id != applicationUser.Id))
+            {
+                command.ApplicationUsers.Remove(applicationUser);
+                _context.Update(command);
+                await _context.SaveChangesAsync();
+            }
+            
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

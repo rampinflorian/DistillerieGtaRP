@@ -1,10 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DistillerieManzibar.CustomQuery
+namespace DistillerieManzibar.CustomQueryModel
 {
     [NotMapped]
-    public class TransactionCustomQuery
+    public class TransactionCustomQueryModel
     {
         public DateTime CreatedAt { get; set; }
         public int Quantity { get; set; }

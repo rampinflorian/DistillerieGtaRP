@@ -4,14 +4,16 @@ using DistillerieManzibar.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DistillerieManzibar.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211026163050_PayementDateTransaction")]
+    partial class PayementDateTransaction
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,7 +238,7 @@ namespace DistillerieManzibar.Migrations
                     b.Property<int>("LiquidCategory")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("PayementAt")
+                    b.Property<DateTime>("PayementAt")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Quantity")

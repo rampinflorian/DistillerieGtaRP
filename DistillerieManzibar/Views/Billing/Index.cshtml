@@ -64,7 +64,7 @@
                     </td>
                     <td class="text-center">
                         @{
-                            var price = applicationUser.Sold * ((decimal)applicationUser.Percentage / 100);
+                            var price = applicationUser.Sold * 2 * ((decimal)applicationUser.Percentage / 100);
                             price = Math.Round(price, 0);
                             total += price;
                         }

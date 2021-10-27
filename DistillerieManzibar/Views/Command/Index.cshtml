@@ -18,117 +18,122 @@
             <button class="btn btn-success btn-sm">Ajouter</button>
         </a>
     </div>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.LiquidCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BilledAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DeliveryAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Company)
-            </th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Model)
-        {
-            <tr class="@(item.BilledAt != null & item.DeliveryAt != null ? "table-success" : "")">
-                <td>
-                    @Html.DisplayFor(modelItem => item.LiquidCategory)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @item.BilledAt?.ToString("g")
-                </td>
-                <td>
-                    @item.DeliveryAt?.ToString("g")
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Company.Name)
-                </td>
-                <td>
-                    @if ((User.IsInRole("Boss") || User.IsInRole("CoBoss")) && item.BilledAt == null)
-                    {
-                        <a asp-action="Billed" asp-route-id="@item.CommandId">
-                            <button class="btn btn-sm btn-success" title="Payé">
-                                <i class="fas fa-cash-register"></i>
-                            </button>
-                        </a>
-                    }
-                    @if (item.DeliveryAt == null)
-                    {
-                        <a asp-action="Delivery" asp-route-id="@item.CommandId">
-                            <button class="btn btn-sm btn-warning" title="Livré">
-                                <i class="fas fa-cart-arrow-down"></i>
-                            </button>
-                        </a>
-                    }
-                    @if (item.DeliveryAt == null || item.BilledAt == null)
-                    {
-                        @if (!item.ApplicationUsers.Any(m => m.Id == currentUser.Id))
+    <div class="overflow-auto" style="max-height: 600px;">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.LiquidCategory)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantity)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BilledAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DeliveryAt)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Company)
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="@(item.BilledAt != null & item.DeliveryAt != null ? "table-success" : "")">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LiquidCategory)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @item.BilledAt?.ToString("g")
+                    </td>
+                    <td>
+                        @item.DeliveryAt?.ToString("g")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Company.Name)
+                    </td>
+                    <td>
+                        @if ((User.IsInRole("Boss") || User.IsInRole("CoBoss")) && item.BilledAt == null)
                         {
-                            <a asp-action="DeliveryParticipation" asp-route-id="@item.CommandId">
-                                <button class="btn btn-sm btn-dark" title="Livreur">
-                                    <i class="fas fa-car-side"></i><i> (@item.ApplicationUsers.Count)</i>
+                            <a asp-action="Billed" asp-route-id="@item.CommandId">
+                                <button class="btn btn-sm btn-success" title="Payé">
+                                    <i class="fas fa-cash-register"></i>
                                 </button>
                             </a>
                         }
-                        else
+                        @if (item.DeliveryAt == null)
                         {
-                            <button class="btn btn-sm btn-secondary" title="Livreur" disabled>
-                                <i class="fas fa-car-side"></i><i> (@item.ApplicationUsers.Count)</i>
-                            </button>
+                            <a asp-action="Delivery" asp-route-id="@item.CommandId">
+                                <button class="btn btn-sm btn-warning" title="Livré">
+                                    <i class="fas fa-cart-arrow-down"></i>
+                                </button>
+                            </a>
                         }
-                        <a asp-action="Edit" asp-route-id="@item.CommandId">
-                            <button class="btn btn-sm btn-primary">
-                                <i class="fas fa-pen"></i>
-                            </button>
-                        </a>
-                        <a asp-action="Delete" asp-route-id="@item.CommandId">
-                            <button class="btn btn-sm btn-danger">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </a>
-                    }
-                </td>
-            </tr>
-            <tr class="@(item.BilledAt != null & item.DeliveryAt != null ? "table-success" : "")">
-                <td colspan="7">
-                    <i class="far fa-arrow-alt-circle-up"></i>
-                    <i>
-                        Livreurs :
-
-                        @foreach (ApplicationUser applicationUser in item.ApplicationUsers)
+                        @if (item.DeliveryAt == null || item.BilledAt == null)
                         {
-                            @applicationUser.FullName()
-                            @if (!applicationUser.Equals(item.ApplicationUsers.Last()))
+                            @if (item.ApplicationUsers.Any(m => m.Id == currentUser.Id))
                             {
-                                <i>, &nbsp;</i>
+                                <a asp-action="DeliveryParticipationRemove" asp-route-id="@item.CommandId">
+                                    <button class="btn btn-sm btn-danger" title="Supprimer mivreur">
+                                        <i class="fas fa-car-side"></i><i> (@item.ApplicationUsers.Count)</i>
+                                    </button>
+                                </a>
                             }
+                            else
+                            {
+                                <a asp-action="DeliveryParticipation" asp-route-id="@item.CommandId">
+                                    <button class="btn btn-sm btn-dark" title="Livreur">
+                                        <i class="fas fa-car-side"></i><i> (@item.ApplicationUsers.Count)</i>
+                                    </button>
+                                </a>
+                            }
+                            <a asp-action="Edit" asp-route-id="@item.CommandId">
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fas fa-pen"></i>
+                                </button>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.CommandId">
+                                <button class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </a>
                         }
-                    </i>
+                    </td>
+                </tr>
+                <tr class="@(item.BilledAt != null & item.DeliveryAt != null ? "table-success" : "")">
+                    <td colspan="7">
+                        <i class="far fa-arrow-alt-circle-up"></i>
+                        <i>
+                            Livreurs :
 
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+                            @foreach (ApplicationUser applicationUser in item.ApplicationUsers)
+                            {
+                                @applicationUser.FullName()
+                                @if (!applicationUser.Equals(item.ApplicationUsers.Last()))
+                                {
+                                    <i>, &nbsp;</i>
+                                }
+                            }
+                        </i>
+
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
 </div>

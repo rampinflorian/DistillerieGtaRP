@@ -14,6 +14,5 @@ namespace DistillerieManzibar.Models
         [Required, Display(Name = "Destination")] public Destination Destination { get; set; }
         [Required, Display(Name = "Quantité")] public int Quantity { get; set; }
         [Required, Display(Name = "Date"), DataType(DataType.Date)]public DateTime CreatedAt { get; set; }
-        [Display(Name = "Date de paiement")]public DateTime? PayementAt { get; set; }
     }
 }

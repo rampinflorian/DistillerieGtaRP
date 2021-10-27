@@ -236,9 +236,6 @@ namespace DistillerieManzibar.Migrations
                     b.Property<int>("LiquidCategory")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("PayementAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 

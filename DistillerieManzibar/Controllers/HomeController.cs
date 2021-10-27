@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
-using DistillerieManzibar.CustomQueryModel;
+using DistillerieManzibar.CustomQuery;
 using DistillerieManzibar.Data;
 using DistillerieManzibar.Enums;
 using Microsoft.AspNetCore.Mvc;
@@ -53,19 +53,9 @@ namespace DistillerieManzibar.Controllers
 
             
             var sqlTransaction = "SELECT TOP (7) SUM(Quantity) as Quantity, CONVERT(DATE,CreatedAt) as CreatedAt FROM [Transaction] GROUP BY CONVERT(DATE,CreatedAt) ORDER BY CONVERT(DATE,CreatedAt) DESC";
-<<<<<<< Updated upstream
             var transactionWeek = await _customQuery.QueryAsync<TransactionCustomQuery>(sqlTransaction);
 
             ViewBag.TransactionWeek = transactionWeek;
-=======
-            var transactionWeek = await _customQuery.QueryAsync<TransactionCustomQueryModel>(sqlTransaction);
-            ViewBag.TransactionWeek = transactionWeek;
-
-            var sqlCommand = "SELECT TOP (14) SUM(Quantity) as Quantity, CONVERT(DATE,CreatedAt) as CreatedAt, Company.CompanyId, Company.Name FROM [Commands] as Command LEFT JOIN Companies Company on Command.CompanyId = Company.CompanyId GROUP BY CONVERT(DATE,CreatedAt), Company.CompanyId, Company.Name ORDER BY CONVERT(DATE,CreatedAt) DESC";
-            var commandWeek = await _customQuery.QueryAsync<CommandCustomQueryModel>(sqlCommand);
-            ViewBag.CommandWeek = commandWeek;
-            
->>>>>>> Stashed changes
             return View();
         }
 

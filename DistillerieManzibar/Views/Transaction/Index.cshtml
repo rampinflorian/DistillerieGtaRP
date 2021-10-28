@@ -42,7 +42,7 @@
             <tbody>
             @foreach (var item in Model)
             {
-                <tr>
+                <tr class="@(item.PayementAt != null ? "table-success" : "")">
                     <td>
                         @Html.DisplayFor(modelItem => item.CreatedAt)
                     </td>
@@ -59,7 +59,7 @@
                         @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
                     <td>
-                        @if (item.ApplicationUser == currentUser)
+                        @if (item.ApplicationUser == currentUser && item.PayementAt is null)
                         {
                             <a asp-action="Edit" asp-route-id="@item.TransactionId">
                                 <button class="btn btn-primary btn-sm">Editer</button>

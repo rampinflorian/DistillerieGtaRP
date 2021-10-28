@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DistillerieManzibar.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211026163050_PayementDateTransaction")]
-    partial class PayementDateTransaction
+    [Migration("20211028160318_removePriceApplicationUser")]
+    partial class removePriceApplicationUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,9 +95,6 @@ namespace DistillerieManzibar.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Sold")
-                        .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -237,9 +234,6 @@ namespace DistillerieManzibar.Migrations
 
                     b.Property<int>("LiquidCategory")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("PayementAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");

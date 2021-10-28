@@ -20,7 +20,16 @@ namespace DistillerieManzibar.Data.Dapper
         public async Task<IEnumerable<T>> QueryAsync<T>(string query)
         {
             return await _connection.QueryAsync<T>(query);
-            
+        }
+
+        public int Execute(string query, object parameters)
+        {
+            return _connection.Execute(query, parameters);
+        }
+
+        public async Task<int> ExecuteAsync(string query, object parameters)
+        {
+            return await _connection.ExecuteAsync(query, parameters);
         }
     }
 }

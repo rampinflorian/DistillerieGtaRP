@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using DistillerieManzibar.Enums
 @using DistillerieManzibar.Helpers
+@using DistillerieManzibar.CustomQueryModel
 @model List<DistillerieManzibar.Models.ApplicationUser>
 @inject UserManager<ApplicationUser> UserManager
 
@@ -9,6 +10,7 @@
     Layout = "_Layout";
 
     Decimal total = 0;
+    IEnumerable<BilledCustomQueryModel> billedCustomQueryModels = ViewBag.NotBilledTransaction;
 }
 
 <div class="shadow p-3 mb-5 bg-light rounded">
@@ -39,6 +41,7 @@
             @foreach (var applicationUser in Model)
             {
                 var roles = await UserManager.GetRolesAsync(applicationUser);
+                var sold = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.Quantity ?? 0;
                 <tr>
                     <td class="text-center">
                         @applicationUser.FullName()
@@ -56,15 +59,15 @@
 
                     </td>
                     <td class="text-center">
-                        <span class='badge badge-primary'>@applicationUser.Sold</span>
+                        <span class='badge badge-primary'>@sold</span>
                     </td>
                     <td class="text-center">
                         <span class='badge badge-secondary'>@applicationUser.Percentage %</span>
-
+                    
                     </td>
                     <td class="text-center">
                         @{
-                            var price = applicationUser.Sold * 2 * ((decimal)applicationUser.Percentage / 100);
+                            var price = sold * 2 * ((decimal)applicationUser.Percentage / 100);
                             price = Math.Round(price, 0);
                             total += price;
                         }

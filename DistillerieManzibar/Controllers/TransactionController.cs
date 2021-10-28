@@ -53,9 +53,6 @@ namespace DistillerieManzibar.Controllers
                 transaction.ApplicationUser = applicationUser;
                 _context.Add(transaction);
 
-                applicationUser.Sold += transaction.Quantity;
-                _context.Update(applicationUser);
-                
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -93,16 +90,9 @@ namespace DistillerieManzibar.Controllers
             
             if (ModelState.IsValid)
             {
-                var applicationUser = await _userManager.GetUserAsync(User);
-                var transactionBeforeUpdate = _context.Transaction.AsNoTracking().First(m => m.TransactionId == transaction.TransactionId);
-
                 try
                 {
-                    applicationUser.Sold -= transactionBeforeUpdate.Quantity;
-                    applicationUser.Sold += transaction.Quantity;
                     _context.Update(transaction);
-                    _context.Update(applicationUser);
-
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -149,11 +139,7 @@ namespace DistillerieManzibar.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var transaction = await _context.Transaction.FindAsync(id);
-            var applicationUser = await _userManager.GetUserAsync(User);
-            applicationUser.Sold -= transaction.Quantity;
-            
             _context.Transaction.Remove(transaction);
-            _context.Update(applicationUser);
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

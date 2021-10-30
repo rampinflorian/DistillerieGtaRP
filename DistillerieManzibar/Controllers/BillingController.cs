@@ -29,8 +29,19 @@ namespace DistillerieManzibar.Controllers
         [Route("", Name = "billing.index")]
         public async Task<IActionResult> Index()
         {
+
+            var sqlTransaction = @"SELECT u.id as ApplicationUserId, SUM(t.quantity) as Quantity, TMP.Date as LastPayementAt
+            FROM [Transaction] t
+                LEFT JOIN AspNetUsers u ON t.ApplicationUserId = u.id
+            LEFT JOIN (SELECT MAX(previous.PayementAt) as Date, u.Id as UserId
+            FROM AspNetUsers u
+                LEFT JOIN [Transaction] previous
+                ON previous.ApplicationUserId = u.id and previous.PayementAt is not null
+            group by u.Id
+                ) as TMP on UserId = ApplicationUserId
+            WHERE t.PayementAt is null
+            Group by u.id, tmp.Date";
             
-            var sqlTransaction = "SELECT ANU.Id as ApplicationUserId, SUM(Quantity) as Quantity FROM [Transaction] LEFT JOIN AspNetUsers ANU on [Transaction].ApplicationUserId = ANU.Id WHERE PayementAt is null GROUP BY ApplicationUserId, ANU.Id";
             var notBilledTransaction = await _customQuery.QueryAsync<BilledCustomQueryModel>(sqlTransaction);
             ViewBag.NotBilledTransaction = notBilledTransaction;
             

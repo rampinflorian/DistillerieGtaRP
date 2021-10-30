@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DistillerieManzibar.CustomQueryModel
 {
@@ -7,5 +8,6 @@ namespace DistillerieManzibar.CustomQueryModel
     {
         public string ApplicationUserId { get; set; }
         public int Quantity { get; set; }
+        public DateTime? LastPayementAt { get; set; }
     }
 }

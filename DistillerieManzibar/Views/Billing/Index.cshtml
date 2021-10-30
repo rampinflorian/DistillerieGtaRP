@@ -42,6 +42,8 @@
             {
                 var roles = await UserManager.GetRolesAsync(applicationUser);
                 var sold = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.Quantity ?? 0;
+                var lastPayementAt = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.LastPayementAt?.ToString("d") ?? "Jamais payé";
+
                 <tr>
                     <td class="text-center">
                         @applicationUser.FullName()
@@ -55,7 +57,7 @@
                         </i>
                     </td>
                     <td class="text-center">
-                        <span class='badge badge-info'>@applicationUser.LastPayementAt.ToString("d")</span>
+                        <span class='badge badge-info'>@lastPayementAt</span>
 
                     </td>
                     <td class="text-center">
@@ -63,7 +65,7 @@
                     </td>
                     <td class="text-center">
                         <span class='badge badge-secondary'>@applicationUser.Percentage %</span>
-                    
+
                     </td>
                     <td class="text-center">
                         @{

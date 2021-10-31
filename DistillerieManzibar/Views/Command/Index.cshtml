@@ -1,4 +1,5 @@
 @using Microsoft.AspNetCore.Identity
+@using DistillerieManzibar.Enums
 @model IEnumerable<DistillerieManzibar.Models.Command>
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -48,25 +49,34 @@
             @foreach (var item in Model)
             {
                 <tr class="@(item.BilledAt != null & item.DeliveryAt != null ? "table-success" : "")">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LiquidCategory)
+                    <td class="text-center">
+                        @if (item.LiquidCategory == LiquidCategory.Alcool)
+                        {
+                            <i class="fas fa-beer" style="color: #fd7e14" data-toggle="tooltip" data-placement="top" title="Alcool"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-tint text-primary" data-toggle="tooltip" data-placement="top" title="Eau"></i>
+
+                        }
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    <td class="text-center">
+                        @item.CreatedAt.ToString("g")
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
+                    <td class="text-center">
+                        <span class="badge badge-dark">@Html.DisplayFor(modelItem => item.Quantity)</span>
+                        
                     </td>
-                    <td>
+                    <td class="text-center">
                         @item.BilledAt?.ToString("g")
                     </td>
-                    <td>
+                    <td class="text-center">
                         @item.DeliveryAt?.ToString("g")
                     </td>
-                    <td>
+                    <td class="text-center">
                         @Html.DisplayFor(modelItem => item.Company.Name)
                     </td>
-                    <td>
+                    <td class="text-center">
                         @if ((User.IsInRole("Boss") || User.IsInRole("CoBoss")) && item.BilledAt == null)
                         {
                             <a asp-action="Billed" asp-route-id="@item.CommandId">

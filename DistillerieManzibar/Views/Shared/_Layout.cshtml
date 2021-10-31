@@ -7,10 +7,14 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
-      @await RenderSectionAsync("Styles", required: false)
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+    @await RenderSectionAsync("Styles", required: false)
 
 
-    </head>
+</head>
 <body>
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -23,19 +27,29 @@
             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
+                        <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Dashboard" asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class="fas fa-tachometer"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Transaction" asp-action="Index">Transactions</a>
+                        <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Transactions" asp-area="" asp-controller="Transaction" asp-action="Index">
+                            <i class="fas fa-ship"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Car" asp-action="Index">Véhicules</a>
+                        <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Véhicules" asp-area="" asp-controller="Car" asp-action="Index">
+                            <i class="fas fa-car"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Billing" asp-action="Index">Facturation</a>
+                        <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Facturation" asp-area="" asp-controller="Billing" asp-action="Index">
+                            <i class="fas fa-money-bill-alt"></i>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Command" asp-action="Index">Commandes</a>
+                        <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Commandes" asp-area="" asp-controller="Command" asp-action="Index">
+                            <i class="fas fa-people-carry"></i>
+                        </a>
                     </li>
                 </ul>
                 <partial name="_LoginPartial"/>
@@ -54,6 +68,11 @@
         &copy; 2021 - DistillerieManzibar GTARP - Manzibar - <a asp-area="" asp-controller="Home" asp-action="Privacy">Informations</a>
     </div>
 </footer>
+<script >
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>

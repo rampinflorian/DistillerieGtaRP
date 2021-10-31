@@ -17,8 +17,6 @@ namespace DistillerieManzibar.Models
 
         [Display(Name = "Taux")]
         public int Percentage { get; set; }
-        [Display(Name = "Dernier payement")]
-        public DateTime LastPayementAt { get; set; }
         public AccountStatus AccountStatus { get; set; }
         public ICollection<Command> Commands { get; set; }
     }

@@ -1,0 +1,247 @@
+﻿@using DistillerieManzibar.Services.Stats.Model
+@using DistillerieManzibar.Enums
+@model DistillerieManzibar.FormsCustom.StatsPeriodFormCustom
+
+@{
+    ViewBag.Title = "Statistiques";
+    Layout = "_Layout";
+    Stats stats = ViewBag.Stats;
+}
+
+<div class="shadow p-3 mb-5 bg-light rounded">
+<h1>@ViewData["Title"]</h1>
+
+<form class="ml-3" asp-action="Index">
+    <div class="row">
+        <div class="col4">
+            <div class="form-group">
+                <input asp-for="Start" class="form-control"/>
+                <span asp-validation-for="Start" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col4">
+            <div class="form-group">
+                <input asp-for="Stop" class="form-control"/>
+                <span asp-validation-for="Stop" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <input type="submit" value="Rechercher" class="btn btn-primary"/>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<div class="row">
+    <div class="col"></div>
+    <div class="col">
+        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+            <div class="card-header">Nombre d'utilisateurs</div>
+            <div class="card-body">
+                <h5 class="card-title">@stats.SumApplicationUser</h5>
+                <p class="card-text">
+                    <i>* Un minimum de 1 livraison effectuée par employé.</i>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col"></div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+            <div class="card-header">Récoltes totales</div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h5 class="card-title">
+                            @stats.Harvests.Count()
+                        </h5>
+                    </div>
+                    <div class="p-2">
+                        <small class="d-flex flex-row-reverse">(@stats.Harvests.Sum(m => m.Quantity)) unité(s))</small>
+                    </div>
+                </div>
+                <p class="card-text">
+                    <i>Somme des répartitions Eau/Alcool sur une période</i>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+            <div class="card-header">Récoltes Alcool</div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h5 class="card-title">
+                            @(stats.Harvests.Count(m => m.LiquidCategory == LiquidCategory.Alcool))
+                        </h5>
+                    </div>
+                    <div class="p-2">
+                        <small class="d-flex flex-row-reverse">(@stats.Harvests.Where(m => m.LiquidCategory == LiquidCategory.Alcool).Sum(m => m.Quantity)) unité(s))</small>
+                    </div>
+                </div>
+                <p class="card-text">
+                    <i>* Récolte de céréales et transformation en Alcool</i>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+            <div class="card-header">Récoltes Eau</div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h5 class="card-title">
+                            @(stats.Harvests.Count(m => m.LiquidCategory == LiquidCategory.NoAlcool))
+                        </h5>
+                    </div>
+                    <div class="p-2">
+                        <small class="d-flex flex-row-reverse">(@stats.Harvests.Where(m => m.LiquidCategory == LiquidCategory.NoAlcool).Sum(m => m.Quantity)) unité(s))</small>
+                    </div>
+                </div>
+                <p class="card-text">
+                    <i>* Récolte d'eau et transformation en Eau purifée</i>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+            <div class="card-header">Comandes Henn House</div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h5 class="card-title">
+                            @stats.Commands.Count(m => m.Company.Name == "Henn House")
+                        </h5>
+                    </div>
+                    <div class="p-2">
+                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.Company.Name == "Henn House").Sum(m => m.Quantity)) unité(s))</small>
+                    </div>
+                </div>
+
+                <p class="card-text">
+                    <i>Somme des commandes Henn House</i>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+            <div class="card-header">Comandes Henn Alcool</div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h5 class="card-title">
+                            @stats.Commands.Count(m => m.LiquidCategory == LiquidCategory.Alcool && m.Company.Name == "Henn House")
+                        </h5>
+                    </div>
+                    <div class="p-2">
+                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.LiquidCategory == LiquidCategory.Alcool && m.Company.Name == "Henn House").Sum(m => m.Quantity)) unité(s))</small>
+                    </div>
+                </div>
+
+                <p class="card-text">
+                    <i>Somme des commandes Henn House en Alcool</i>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+            <div class="card-header">Comandes Henn Eau</div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h5 class="card-title">
+                            @stats.Commands.Count(m => m.LiquidCategory == LiquidCategory.NoAlcool && m.Company.Name == "Henn House")
+                        </h5>
+                    </div>
+                    <div class="p-2">
+                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.LiquidCategory == LiquidCategory.NoAlcool && m.Company.Name == "Henn House").Sum(m => m.Quantity)) unité(s))</small>
+                    </div>
+                </div>
+
+                <p class="card-text">
+                    <i>Somme des commandes Henn en Eau</i>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+            <div class="card-header">Comandes Yellow Jack</div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h5 class="card-title">
+                            @stats.Commands.Count(m => m.Company.Name == "Yellow Jack")
+                        </h5>
+                    </div>
+                    <div class="p-2">
+                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.Company.Name == "Yellow Jack").Sum(m => m.Quantity)) unité(s))</small>
+                    </div>
+                </div>
+
+                <p class="card-text">
+                    <i>Somme des commandes Yellow Jack</i>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+            <div class="card-header">Comandes Yellow Alcool</div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h5 class="card-title">
+                            @stats.Commands.Count(m => m.LiquidCategory == LiquidCategory.Alcool && m.Company.Name == "Yellow Jack")
+                        </h5>
+                    </div>
+                    <div class="p-2">
+                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.LiquidCategory == LiquidCategory.Alcool && m.Company.Name == "Yellow Jack").Sum(m => m.Quantity)) unité(s))</small>
+                    </div>
+                </div>
+
+                <p class="card-text">
+                    <i>Somme des commandes Yellow Jack en Alcool</i>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+            <div class="card-header">Comandes Yellow Eau</div>
+            <div class="card-body">
+                <div class="d-flex">
+                    <div class="mr-auto p-2">
+                        <h5 class="card-title">
+                            @stats.Commands.Count(m => m.LiquidCategory == LiquidCategory.NoAlcool && m.Company.Name == "Yellow Jack")
+                        </h5>
+                    </div>
+                    <div class="p-2">
+                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.LiquidCategory == LiquidCategory.NoAlcool && m.Company.Name == "Yellow Jack").Sum(m => m.Quantity)) unité(s))</small>
+                    </div>
+                </div>
+
+                <p class="card-text">
+                    <i>Somme des commandes Yellow en Eau</i>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

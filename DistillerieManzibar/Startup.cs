@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using DistillerieManzibar.Data;
 using DistillerieManzibar.Models;
+using DistillerieManzibar.Services.Stats;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
@@ -44,7 +45,7 @@ namespace DistillerieManzibar
 
             // AUTO WIRING
             services.AddScoped<Data.Dapper.CustomQuery>();
-            
+            services.AddScoped<StatsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

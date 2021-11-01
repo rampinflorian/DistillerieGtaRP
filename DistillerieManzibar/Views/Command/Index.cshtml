@@ -126,19 +126,12 @@
                 </tr>
                 <tr class="@(item.BilledAt != null & item.DeliveryAt != null ? "table-success" : "")">
                     <td colspan="7">
-                        <i class="far fa-arrow-alt-circle-up"></i>
-                        <i>
-                            Livreurs :
-
-                            @foreach (ApplicationUser applicationUser in item.ApplicationUsers)
+                        <i class="far fa-arrow-alt-circle-up"  data-toggle="tooltip" data-placement="top" title="Livreurs"></i>
+                        @foreach (ApplicationUser applicationUser in item.ApplicationUsers)
                             {
-                                @applicationUser.FullName()
-                                @if (!applicationUser.Equals(item.ApplicationUsers.Last()))
-                                {
-                                    <i>, &nbsp;</i>
-                                }
+                                <span class="badge bg-primary text-white">@applicationUser.FullName()</span>
                             }
-                        </i>
+                        
 
                     </td>
                 </tr>

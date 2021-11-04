@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using DistillerieManzibar.Data;
 using DistillerieManzibar.Enums;
 using DistillerieManzibar.FormsCustom;
 using DistillerieManzibar.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +18,14 @@ namespace DistillerieManzibar.Controllers
     public class EmployeeController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public EmployeeController(ApplicationDbContext context)
+        public EmployeeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         [Route("", Name = "users.index")]
@@ -44,10 +50,13 @@ namespace DistillerieManzibar.Controllers
                 return NotFound();
             }
 
+            var role = await _userManager.GetRolesAsync(applicationUser);
+            
+            
             var applicationUserFormCustom = new ApplicationUserFormCustom()
             {
                 ApplicationUser = applicationUser,
-                ApplicationRole = ApplicationRole.Employee
+                ApplicationRole = (ApplicationRole)Enum.Parse(typeof(ApplicationRole), role.First())
             };
 
             return View(applicationUserFormCustom);
@@ -80,7 +89,20 @@ namespace DistillerieManzibar.Controllers
                                                  "Try again, and if the problem persists, " +
                                                  "see your system administrator.");
                 }
+            }
+
+            var roles = await _userManager.GetRolesAsync(applicationUserToUpdate);
+            await _userManager.RemoveFromRolesAsync(applicationUserToUpdate, roles);
+            await _userManager.AddToRoleAsync(applicationUserToUpdate, applicationUserFormCustom.ApplicationRole.ToString());
+
+            try
+            {
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
             
             return View(applicationUserFormCustom);

@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Gestion des employés";
+}
+
+<div class="shadow p-3 mb-5 bg-light rounded">
+    <h1>@ViewData["Title"]</h1>
+    <div class="d-flex flex-row-reverse">
+    </div>
+    <div class="overflow-auto" style="max-height: 600px;">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    Employé
+                </th>
+                <th>
+                    Informations
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (ApplicationUser item in ViewBag.ApplicationUsers)
+            {
+                <tr>
+                    <td>
+                        @item.FullName()
+                    </td>
+                    <td>% : @item.Percentage</td>
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">
+                            <button class="btn btn-primary btn-sm">Editer</button>
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+
+    </div>
+</div>

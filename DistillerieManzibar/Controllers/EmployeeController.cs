@@ -52,7 +52,7 @@ namespace DistillerieManzibar.Controllers
 
             var role = await _userManager.GetRolesAsync(applicationUser);
 
-            var applicationRole = ApplicationRole.Employee;
+            var applicationRole = ApplicationRole.Learner;
             if (role.Any())
             {
                 applicationRole = (ApplicationRole)Enum.Parse(typeof(ApplicationRole), role.First());

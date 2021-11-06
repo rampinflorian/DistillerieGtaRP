@@ -30,6 +30,7 @@ namespace DistillerieManzibar.Controllers
             var applicationDbContext = _context.Commands
                 .Include(c => c.Company)
                 .Include(m => m.ApplicationUsers)
+                .Include(m => m.Pricing)
                 .OrderByDescending(m => m.CreatedAt);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -52,12 +53,15 @@ namespace DistillerieManzibar.Controllers
             if (ModelState.IsValid)
             {
                 command.CreatedAt = DateTime.Now;
+                command.Pricing = await _context.Pricings.OrderByDescending(m => m.CreatedAt).FirstAsync(m =>
+                    m.CreatedAt <= command.CreatedAt && m.CompanyId == command.CompanyId &&
+                    m.LiquidCategory == command.LiquidCategory);
                 _context.Add(command);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "CompanyId", "Name", command.CompanyId);
+            ViewData["CompanyId"] = new SelectList(_context.Companies, "CompanyId", "Name");
             return View(command);
         }
 
@@ -187,6 +191,7 @@ namespace DistillerieManzibar.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
         [Route("delivery-participation/{id:int}", Name = "command.delivery.participation")]
         public async Task<IActionResult> DeliveryParticipation(int id)
         {
@@ -195,7 +200,8 @@ namespace DistillerieManzibar.Controllers
                 return NotFound();
             }
 
-            var command = await _context.Commands.Include(m => m.ApplicationUsers).FirstOrDefaultAsync(m => m.CommandId == id);
+            var command = await _context.Commands.Include(m => m.ApplicationUsers)
+                .FirstOrDefaultAsync(m => m.CommandId == id);
             var applicationUser = await _userManager.GetUserAsync(User);
 
             if (command.ApplicationUsers.All(m => m.Id != applicationUser.Id))
@@ -204,6 +210,7 @@ namespace DistillerieManzibar.Controllers
                 _context.Update(command);
                 await _context.SaveChangesAsync();
             }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -214,7 +221,9 @@ namespace DistillerieManzibar.Controllers
             {
                 return NotFound();
             }
-            var command = await _context.Commands.Include(m => m.ApplicationUsers).FirstOrDefaultAsync(m => m.CommandId == id);
+
+            var command = await _context.Commands.Include(m => m.ApplicationUsers)
+                .FirstOrDefaultAsync(m => m.CommandId == id);
             var applicationUser = await _userManager.GetUserAsync(User);
 
             if (command.ApplicationUsers.Any(m => m.Id != applicationUser.Id))
@@ -223,7 +232,7 @@ namespace DistillerieManzibar.Controllers
                 _context.Update(command);
                 await _context.SaveChangesAsync();
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
     }

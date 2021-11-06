@@ -30,11 +30,10 @@ namespace DistillerieManzibar.Services.Stats
                 Harvests = await _context.Transaction.Where(m =>
                         m.CreatedAt >= statsPeriodFormCustom.Start && m.CreatedAt <= statsPeriodFormCustom.Stop)
                     .ToListAsync(),
-                Commands = await _context.Commands.Include(m => m.Company).Where(m =>
+                Commands = await _context.Commands.Include(m => m.Pricing).Include(m => m.Company).Where(m =>
                         m.CreatedAt >= statsPeriodFormCustom.Start && m.CreatedAt <= statsPeriodFormCustom.Stop)
                     .ToListAsync()
             };
-
             return stats;
         }
     }

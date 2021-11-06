@@ -10,6 +10,5 @@ namespace DistillerieManzibar.Services.Stats.Model
         public int SumApplicationUser { get; set; }
         public List<Transaction> Harvests { get; set; }
         public List<Command> Commands { get; set; }
-        
     }
 }

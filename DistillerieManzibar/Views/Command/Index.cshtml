@@ -42,12 +42,17 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Company)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Pricing.Price)
+                </th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             @foreach (var item in Model)
             {
+                var price = item.Pricing.Price * item.Quantity;
+
                 <tr class="@(item.BilledAt != null & item.DeliveryAt != null ? "table-success" : "")">
                     <td class="text-center">
                         @if (item.LiquidCategory == LiquidCategory.Alcool)
@@ -57,24 +62,26 @@
                         else
                         {
                             <i class="fas fa-tint text-primary" data-toggle="tooltip" data-placement="top" title="Eau"></i>
-
                         }
                     </td>
                     <td class="text-center">
-                        @item.CreatedAt.ToString("g")
+                        @item.CreatedAt.ToString("d")
                     </td>
                     <td class="text-center">
                         <span class="badge badge-dark">@Html.DisplayFor(modelItem => item.Quantity)</span>
-                        
+
                     </td>
                     <td class="text-center">
-                        @item.BilledAt?.ToString("g")
+                        @item.BilledAt?.ToString("d")
                     </td>
                     <td class="text-center">
-                        @item.DeliveryAt?.ToString("g")
+                        @item.DeliveryAt?.ToString("d")
                     </td>
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.Company.Name)
+                    </td>
+                    <td class="text-center">
+                        <span class="badge badge-success">$ @price</span>
                     </td>
                     <td class="text-center">
                         @if ((User.IsInRole("Boss") || User.IsInRole("CoBoss")) && item.BilledAt == null)
@@ -125,13 +132,13 @@
                     </td>
                 </tr>
                 <tr class="@(item.BilledAt != null & item.DeliveryAt != null ? "table-success" : "")">
-                    <td colspan="7">
-                        <i class="far fa-arrow-alt-circle-up"  data-toggle="tooltip" data-placement="top" title="Livreurs"></i>
+                    <td colspan="8">
+                        <i class="far fa-arrow-alt-circle-up" data-toggle="tooltip" data-placement="top" title="Livreurs"></i>
                         @foreach (ApplicationUser applicationUser in item.ApplicationUsers)
-                            {
-                                <span class="badge bg-primary text-white">@applicationUser.FullName()</span>
-                            }
-                        
+                        {
+                            <span class="badge bg-primary text-white">@applicationUser.FullName()</span>
+                        }
+
 
                     </td>
                 </tr>

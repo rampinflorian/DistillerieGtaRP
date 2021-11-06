@@ -4,14 +4,16 @@ using DistillerieManzibar.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DistillerieManzibar.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211105175215_Pricing")]
+    partial class Pricing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,17 +187,12 @@ namespace DistillerieManzibar.Migrations
                     b.Property<int>("LiquidCategory")
                         .HasColumnType("int");
 
-                    b.Property<int>("PricingId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("CommandId");
 
                     b.HasIndex("CompanyId");
-
-                    b.HasIndex("PricingId");
 
                     b.ToTable("Commands");
                 });
@@ -456,15 +453,7 @@ namespace DistillerieManzibar.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DistillerieManzibar.Models.Pricing", "Pricing")
-                        .WithMany()
-                        .HasForeignKey("PricingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Company");
-
-                    b.Navigation("Pricing");
                 });
 
             modelBuilder.Entity("DistillerieManzibar.Models.Pricing", b =>

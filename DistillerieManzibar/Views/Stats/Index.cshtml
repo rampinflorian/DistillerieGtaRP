@@ -6,6 +6,7 @@
     ViewBag.Title = "Statistiques";
     Layout = "_Layout";
     Stats stats = ViewBag.Stats;
+    List<StatsPricing> statsPricing = ViewBag.StatsPricings;
 }
 
 <div class="shadow p-3 mb-5 bg-light rounded">
@@ -121,11 +122,13 @@
                 <div class="d-flex">
                     <div class="mr-auto p-2">
                         <h5 class="card-title">
-                            @stats.Commands.Count(m => m.Company.Name == "Henn House")
+                            $ @statsPricing.Where(m => m.Company.Name == "Henn House").Sum(m => m.Price)
+
                         </h5>
                     </div>
                     <div class="p-2">
-                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.Company.Name == "Henn House").Sum(m => m.Quantity)) unité(s))</small>
+                        <small class="d-flex flex-row-reverse">@stats.Commands.Where(m => m.Company.Name == "Henn House").Sum(m => m.Quantity) unité(s)</small>
+                        <small class="d-flex flex-row-reverse">@stats.Commands.Count(m => m.Company.Name == "Henn House") Trs.</small>
                     </div>
                 </div>
 
@@ -142,14 +145,15 @@
                 <div class="d-flex">
                     <div class="mr-auto p-2">
                         <h5 class="card-title">
-                            @stats.Commands.Count(m => m.LiquidCategory == LiquidCategory.Alcool && m.Company.Name == "Henn House")
+                            $ @statsPricing.Where(m => m.Company.Name == "Henn House" && m.LiquidCategory == LiquidCategory.Alcool).Sum(m => m.Price)
+
                         </h5>
                     </div>
                     <div class="p-2">
-                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.LiquidCategory == LiquidCategory.Alcool && m.Company.Name == "Henn House").Sum(m => m.Quantity)) unité(s))</small>
+                        <small class="d-flex flex-row-reverse">@stats.Commands.Where(m => m.Company.Name == "Henn House" && m.LiquidCategory == LiquidCategory.Alcool).Sum(m => m.Quantity) unité(s)</small>
+                        <small class="d-flex flex-row-reverse">@stats.Commands.Count(m => m.Company.Name == "Henn House" && m.LiquidCategory == LiquidCategory.Alcool) Trs.</small>
                     </div>
                 </div>
-
                 <p class="card-text">
                     <i>Somme des commandes Henn House en Alcool</i>
                 </p>
@@ -163,11 +167,13 @@
                 <div class="d-flex">
                     <div class="mr-auto p-2">
                         <h5 class="card-title">
-                            @stats.Commands.Count(m => m.LiquidCategory == LiquidCategory.NoAlcool && m.Company.Name == "Henn House")
+                            $ @statsPricing.Where(m => m.Company.Name == "Henn House" && m.LiquidCategory == LiquidCategory.NoAlcool).Sum(m => m.Price)
+
                         </h5>
                     </div>
                     <div class="p-2">
-                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.LiquidCategory == LiquidCategory.NoAlcool && m.Company.Name == "Henn House").Sum(m => m.Quantity)) unité(s))</small>
+                        <small class="d-flex flex-row-reverse">@stats.Commands.Where(m => m.Company.Name == "Henn House" && m.LiquidCategory == LiquidCategory.NoAlcool).Sum(m => m.Quantity) unité(s)</small>
+                        <small class="d-flex flex-row-reverse">@stats.Commands.Count(m => m.Company.Name == "Henn House" && m.LiquidCategory == LiquidCategory.NoAlcool) Trs.</small>
                     </div>
                 </div>
 
@@ -187,11 +193,13 @@
                 <div class="d-flex">
                     <div class="mr-auto p-2">
                         <h5 class="card-title">
-                            @stats.Commands.Count(m => m.Company.Name == "Yellow Jack")
+                            $ @statsPricing.Where(m => m.Company.Name == "Yellow Jack").Sum(m => m.Price)
+
                         </h5>
                     </div>
                     <div class="p-2">
-                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.Company.Name == "Yellow Jack").Sum(m => m.Quantity)) unité(s))</small>
+                        <small class="d-flex flex-row-reverse">@stats.Commands.Where(m => m.Company.Name == "Yellow Jack").Sum(m => m.Quantity) unité(s)</small>
+                        <small class="d-flex flex-row-reverse">@stats.Commands.Count(m => m.Company.Name == "Yellow Jack") Trs.</small>
                     </div>
                 </div>
 
@@ -206,15 +214,17 @@
             <div class="card-header">Comandes Yellow Alcool</div>
             <div class="card-body">
                 <div class="d-flex">
-                    <div class="mr-auto p-2">
-                        <h5 class="card-title">
-                            @stats.Commands.Count(m => m.LiquidCategory == LiquidCategory.Alcool && m.Company.Name == "Yellow Jack")
-                        </h5>
-                    </div>
-                    <div class="p-2">
-                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.LiquidCategory == LiquidCategory.Alcool && m.Company.Name == "Yellow Jack").Sum(m => m.Quantity)) unité(s))</small>
-                    </div>
-                </div>
+                                    <div class="mr-auto p-2">
+                                        <h5 class="card-title">
+                                            $ @statsPricing.Where(m => m.Company.Name == "Yellow Jack" && m.LiquidCategory == LiquidCategory.Alcool).Sum(m => m.Price)
+                
+                                        </h5>
+                                    </div>
+                                    <div class="p-2">
+                                        <small class="d-flex flex-row-reverse">@stats.Commands.Where(m => m.Company.Name == "Yellow Jack" && m.LiquidCategory == LiquidCategory.Alcool).Sum(m => m.Quantity) unité(s)</small>
+                                        <small class="d-flex flex-row-reverse">@stats.Commands.Count(m => m.Company.Name == "Yellow Jack" && m.LiquidCategory == LiquidCategory.Alcool) Trs.</small>
+                                    </div>
+                                </div>
 
                 <p class="card-text">
                     <i>Somme des commandes Yellow Jack en Alcool</i>
@@ -229,14 +239,15 @@
                 <div class="d-flex">
                     <div class="mr-auto p-2">
                         <h5 class="card-title">
-                            @stats.Commands.Count(m => m.LiquidCategory == LiquidCategory.NoAlcool && m.Company.Name == "Yellow Jack")
+                            $ @statsPricing.Where(m => m.Company.Name == "Yellow Jack" && m.LiquidCategory == LiquidCategory.NoAlcool).Sum(m => m.Price)
+
                         </h5>
                     </div>
                     <div class="p-2">
-                        <small class="d-flex flex-row-reverse">(@stats.Commands.Where(m => m.LiquidCategory == LiquidCategory.NoAlcool && m.Company.Name == "Yellow Jack").Sum(m => m.Quantity)) unité(s))</small>
+                        <small class="d-flex flex-row-reverse">@stats.Commands.Where(m => m.Company.Name == "Yellow Jack" && m.LiquidCategory == LiquidCategory.NoAlcool).Sum(m => m.Quantity) unité(s)</small>
+                        <small class="d-flex flex-row-reverse">@stats.Commands.Count(m => m.Company.Name == "Yellow Jack" && m.LiquidCategory == LiquidCategory.NoAlcool) Trs.</small>
                     </div>
                 </div>
-
                 <p class="card-text">
                     <i>Somme des commandes Yellow en Eau</i>
                 </p>

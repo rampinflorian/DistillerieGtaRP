@@ -16,6 +16,7 @@ namespace DistillerieManzibar.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Command> Commands { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Pricing> Pricings { get; set; }
 
     }
 }

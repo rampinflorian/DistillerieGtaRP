@@ -51,12 +51,17 @@ namespace DistillerieManzibar.Controllers
             }
 
             var role = await _userManager.GetRolesAsync(applicationUser);
-            
-            
+
+            var applicationRole = ApplicationRole.Employee;
+            if (role.Any())
+            {
+                applicationRole = (ApplicationRole)Enum.Parse(typeof(ApplicationRole), role.First());
+            }
+
             var applicationUserFormCustom = new ApplicationUserFormCustom()
             {
                 ApplicationUser = applicationUser,
-                ApplicationRole = (ApplicationRole)Enum.Parse(typeof(ApplicationRole), role.First())
+                ApplicationRole = applicationRole
             };
 
             return View(applicationUserFormCustom);

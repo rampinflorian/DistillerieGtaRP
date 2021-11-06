@@ -1,4 +1,5 @@
-﻿using DistillerieManzibar.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using DistillerieManzibar.Enums;
 using DistillerieManzibar.Models;
 
 namespace DistillerieManzibar.FormsCustom
@@ -6,6 +7,6 @@ namespace DistillerieManzibar.FormsCustom
     public class ApplicationUserFormCustom
     {
         public ApplicationUser ApplicationUser { get; set; }
-        public ApplicationRole ApplicationRole { get; set; }
+        [Display(Name = "Rôle")]public ApplicationRole? ApplicationRole { get; set; }
     }
 }

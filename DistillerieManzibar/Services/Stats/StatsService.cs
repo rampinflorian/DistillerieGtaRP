@@ -21,7 +21,7 @@ namespace DistillerieManzibar.Services.Stats
 
         public async Task<Model.Stats> GetStats(StatsPeriodFormCustom statsPeriodFormCustom)
         {
-            statsPeriodFormCustom.Start ??= DateTime.Now.Date.AddDays(-7);
+            statsPeriodFormCustom.Start ??= DateTime.Now.Date.AddDays(-6);
             statsPeriodFormCustom.Stop ??= DateTime.Now.Date;
 
             statsPeriodFormCustom.Stop = statsPeriodFormCustom.Stop.Value.AddDays(+1).AddSeconds(-1);

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DistillerieManzibar.Data;
 using DistillerieManzibar.Enums;
 using DistillerieManzibar.FormsCustom;
+using DistillerieManzibar.Services.Stats.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace DistillerieManzibar.Services.Stats
@@ -34,7 +36,36 @@ namespace DistillerieManzibar.Services.Stats
                         m.CreatedAt >= statsPeriodFormCustom.Start && m.CreatedAt <= statsPeriodFormCustom.Stop)
                     .ToListAsync()
             };
+            stats.StatsPricingList = _GetPricing(stats);
+            
             return stats;
+        }
+
+        private List<StatsPricing> _GetPricing(Model.Stats stats)
+        {
+            var statsPricings = new List<StatsPricing>();
+
+            foreach (var command in stats.Commands)
+            {
+                if (statsPricings.Exists(m =>
+                    m.Company == command.Company && m.LiquidCategory == command.LiquidCategory))
+                {
+                    statsPricings.First(m =>
+                            m.Company == command.Company && m.LiquidCategory == command.LiquidCategory).Price +=
+                        command.Quantity * command.Pricing.Price;
+                }
+                else
+                {
+                    statsPricings.Add(new StatsPricing()
+                    {
+                        Company = command.Company,
+                        Price = command.Quantity * command.Pricing.Price,
+                        LiquidCategory = command.LiquidCategory
+                    });
+                }
+            }
+
+            return statsPricings;
         }
     }
 }

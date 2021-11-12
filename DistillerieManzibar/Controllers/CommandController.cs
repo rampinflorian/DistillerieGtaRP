@@ -87,7 +87,7 @@ namespace DistillerieManzibar.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
-            [Bind("CommandId,LiquidCategory,DeliveryAt,BilletAt,CreatedAt,Quantity,CompanyId")]
+            [Bind("CommandId,LiquidCategory,DeliveryAt,BilletAt,CreatedAt,Quantity,CompanyId, PricingId")]
             Command command)
         {
             ModelState.Remove("CreatedAt");

@@ -28,9 +28,6 @@
                     @Html.DisplayNameFor(model => model.LiquidCategory)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.CreatedAt)
-                </th>
-                <th>
                     @Html.DisplayNameFor(model => model.Quantity)
                 </th>
                 <th>
@@ -63,9 +60,6 @@
                         {
                             <i class="fas fa-tint text-primary" data-toggle="tooltip" data-placement="top" title="Eau"></i>
                         }
-                    </td>
-                    <td class="text-center">
-                        @item.CreatedAt.ToString("d")
                     </td>
                     <td class="text-center">
                         <span class="badge badge-dark">@Html.DisplayFor(modelItem => item.Quantity)</span>
@@ -132,14 +126,20 @@
                     </td>
                 </tr>
                 <tr class="@(item.BilledAt != null & item.DeliveryAt != null ? "table-success" : "")">
-                    <td colspan="8">
+                    <td colspan="4">
                         <i class="far fa-arrow-alt-circle-up" data-toggle="tooltip" data-placement="top" title="Livreurs"></i>
                         @foreach (ApplicationUser applicationUser in item.ApplicationUsers)
                         {
                             <span class="badge bg-primary text-white">@applicationUser.FullName()</span>
                         }
-
-
+                    </td>
+                    <td colspan="2">
+                        @if (item.PayementRecipient != null) {
+                            <span class="badge badge-dark"><i class="fas fa-cash-register"></i> @item.PayementRecipient?.FullName()</span>
+                        }
+                    </td>
+                    <td colspan="2">
+                        <span class="badge bg-primary text-white"><i class="fas fa-people-carry"></i> @item.CreatedBy?.FullName() - <i>@item.CreatedAt.ToString("g")</i></span>
                     </td>
                 </tr>
             }

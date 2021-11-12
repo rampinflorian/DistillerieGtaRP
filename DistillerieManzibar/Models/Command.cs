@@ -21,5 +21,8 @@ namespace DistillerieManzibar.Models
         public ICollection<ApplicationUser> ApplicationUsers { get; set; }
         [Required]public int PricingId { get; set; }
         public Pricing Pricing { get; set; }
+        
+        public ApplicationUser CreatedBy { get; set; }
+        public ApplicationUser PayementRecipient { get; set; }
     }
 }

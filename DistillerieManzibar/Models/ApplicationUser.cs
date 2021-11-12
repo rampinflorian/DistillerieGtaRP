@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using DistillerieManzibar.Enums;
 using Microsoft.AspNetCore.Identity;
 
@@ -18,6 +19,7 @@ namespace DistillerieManzibar.Models
         [Display(Name = "Taux")]
         public int Percentage { get; set; }
         public AccountStatus AccountStatus { get; set; }
+        [NotMapped]
         public ICollection<Command> Commands { get; set; }
     }
 }

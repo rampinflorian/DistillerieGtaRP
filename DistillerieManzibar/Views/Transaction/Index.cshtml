@@ -1,5 +1,6 @@
 @model IEnumerable<DistillerieManzibar.Models.Transaction>
 @using Microsoft.AspNetCore.Identity
+@using DistillerieManzibar.Enums
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -17,23 +18,23 @@
         </a>
     </div>
     <div class="overflow-auto" style="max-height: 600px;">
-        
+
         <table class="table">
             <thead>
             <tr>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.CreatedAt)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.ApplicationUser)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.LiquidCategory)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.Destination)
                 </th>
-                <th>
+                <th class="text-center">
                     @Html.DisplayNameFor(model => model.Quantity)
                 </th>
                 <th></th>
@@ -43,22 +44,38 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedAt)
+                    <td class="text-center">
+                        <span class="badge bg-info text-white">@Html.DisplayFor(modelItem => item.CreatedAt)</span>
                     </td>
-                    <td>
-                        @item.ApplicationUser.FullName()
+                    <td class="text-center">
+                        <span class="badge bg-secondary text-white">@item.ApplicationUser.FullName()</span>
+
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LiquidCategory)
+                    <td class="text-center">
+                        @if (item.LiquidCategory == LiquidCategory.Alcool)
+                        {
+                            <i class="fas fa-beer" style="color: #fd7e14" data-toggle="tooltip" data-placement="top" title="Alcool"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-tint text-primary" data-toggle="tooltip" data-placement="top" title="Eau"></i>
+                        }
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Destination)
+                    <td class="text-center">
+                        @if (item.Destination == Destination.Export)
+                        {
+                            <i class="fas fa-ship" style="color: #006AD4" data-toggle="tooltip" data-placement="top" title="Exportation"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-box" style="color: #D49000" data-toggle="tooltip" data-placement="top" title="Stock"></i>
+                        }
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
+                    <td class="text-center">
+                        <span class="badge bg-primary text-white">@Html.DisplayFor(modelItem => item.Quantity)</span>
+
                     </td>
-                    <td>
+                    <td class="text-center">
                         @if (item.ApplicationUser == currentUser)
                         {
                             <a asp-action="Edit" asp-route-id="@item.TransactionId">

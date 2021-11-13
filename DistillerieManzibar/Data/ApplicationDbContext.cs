@@ -18,5 +18,13 @@ namespace DistillerieManzibar.Data
         public DbSet<Company> Companies { get; set; }
         public DbSet<Pricing> Pricings { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            
+            builder.Entity<Command>()
+                .HasMany(x => x.ApplicationUsers)
+                .WithMany(x => x.Commands);
+        }
     }
 }

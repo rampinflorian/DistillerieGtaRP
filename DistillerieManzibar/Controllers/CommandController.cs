@@ -31,6 +31,8 @@ namespace DistillerieManzibar.Controllers
                 .Include(c => c.Company)
                 .Include(m => m.ApplicationUsers)
                 .Include(m => m.Pricing)
+                .Include(m => m.CreatedBy)
+                .Include(m => m.PayementRecipient)
                 .OrderByDescending(m => m.CreatedAt);
             return View(await applicationDbContext.ToListAsync());
         }
@@ -56,6 +58,7 @@ namespace DistillerieManzibar.Controllers
                 command.Pricing = await _context.Pricings.OrderByDescending(m => m.CreatedAt).FirstAsync(m =>
                     m.CreatedAt <= command.CreatedAt && m.CompanyId == command.CompanyId &&
                     m.LiquidCategory == command.LiquidCategory);
+                command.CreatedBy = await _userManager.GetUserAsync(User);
                 _context.Add(command);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -170,6 +173,7 @@ namespace DistillerieManzibar.Controllers
 
             var command = await _context.Commands.FindAsync(id);
             command.BilledAt = DateTime.Now;
+            command.PayementRecipient = await _userManager.GetUserAsync(User);
             _context.Update(command);
             await _context.SaveChangesAsync();
 

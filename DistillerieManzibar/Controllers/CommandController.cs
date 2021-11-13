@@ -31,6 +31,8 @@ namespace DistillerieManzibar.Controllers
                 .Include(c => c.Company)
                 .Include(m => m.ApplicationUsers)
                 .Include(m => m.Pricing)
+                .Include(m => m.CreatedBy)
+                .Include(m => m.PayementRecipient)
                 .OrderByDescending(m => m.CreatedAt);
             return View(await applicationDbContext.ToListAsync());
         }

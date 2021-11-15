@@ -230,7 +230,7 @@ namespace DistillerieManzibar.Controllers
                 .FirstOrDefaultAsync(m => m.CommandId == id);
             var applicationUser = await _userManager.GetUserAsync(User);
 
-            if (command.ApplicationUsers.Any(m => m.Id != applicationUser.Id))
+            if (command.ApplicationUsers.Any(m => m.Id == applicationUser.Id))
             {
                 command.ApplicationUsers.Remove(applicationUser);
                 _context.Update(command);

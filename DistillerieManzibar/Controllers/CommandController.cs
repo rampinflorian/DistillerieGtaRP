@@ -163,7 +163,7 @@ namespace DistillerieManzibar.Controllers
         }
 
         [Route("billed/{id:int}", Name = "command.billed")]
-        [Authorize(Roles = "Boss, CoBoss")]
+        [Authorize(Roles = "Boss, CoBoss, Leader")]
         public async Task<IActionResult> Billed(int id)
         {
             if (id == 0)

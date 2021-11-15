@@ -78,7 +78,7 @@
                         <span class="badge badge-success">$ @price</span>
                     </td>
                     <td class="text-center">
-                        @if ((User.IsInRole("Boss") || User.IsInRole("CoBoss")) && item.BilledAt == null)
+                        @if ((User.IsInRole("Boss") || User.IsInRole("CoBoss")) || User.IsInRole("Leader") && item.BilledAt == null)
                         {
                             <a asp-action="Billed" asp-route-id="@item.CommandId">
                                 <button class="btn btn-sm btn-success" title="Payé">

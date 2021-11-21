@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using DistillerieManzibar.Data;
 using DistillerieManzibar.Enums;
 using DistillerieManzibar.FormsCustom;
+using DistillerieManzibar.Models;
 using DistillerieManzibar.Services.Stats.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DistillerieManzibar.Services.Stats
@@ -13,10 +15,12 @@ namespace DistillerieManzibar.Services.Stats
     public class StatsService
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public StatsService(ApplicationDbContext context)
+        public StatsService(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<Model.Stats> GetStats(StatsPeriodFormCustom statsPeriodFormCustom)
@@ -25,10 +29,16 @@ namespace DistillerieManzibar.Services.Stats
             statsPeriodFormCustom.Stop ??= DateTime.Now.Date;
 
             statsPeriodFormCustom.Stop = statsPeriodFormCustom.Stop.Value.AddDays(+1).AddSeconds(-1);
-
+            
+            var users = new List<ApplicationUser>();
+            users.AddRange(await _userManager.GetUsersInRoleAsync("Employee"));
+            users.AddRange(await _userManager.GetUsersInRoleAsync("Learner"));
+            users.AddRange(await _userManager.GetUsersInRoleAsync("Boss"));
+            users.AddRange(await _userManager.GetUsersInRoleAsync("CoBoss"));
+            
             var stats = new Model.Stats
             {
-                SumApplicationUser = await _context.Transaction.GroupBy(m => m.ApplicationUserId).CountAsync(),
+                SumApplicationUser = users.Count,
                 Harvests = await _context.Transaction.Where(m =>
                         m.CreatedAt >= statsPeriodFormCustom.Start && m.CreatedAt <= statsPeriodFormCustom.Stop)
                     .ToListAsync(),

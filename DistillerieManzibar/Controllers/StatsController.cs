@@ -3,8 +3,6 @@ using DistillerieManzibar.FormsCustom;
 using DistillerieManzibar.Services.Stats;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Rotativa.AspNetCore;
 
 namespace DistillerieManzibar.Controllers
 {

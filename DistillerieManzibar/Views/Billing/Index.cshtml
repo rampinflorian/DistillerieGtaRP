@@ -9,12 +9,12 @@
     ViewBag.Title = "Facturation";
     Layout = "_Layout";
 
-    Decimal total = 0;
-    IEnumerable<BilledCustomQueryModel> billedCustomQueryModels = ViewBag.NotBilledTransaction;
+    List<BilledCustomQueryModel> billedCustomQueryModels = ViewBag.NotBilledTransaction;
 }
 
 <div class="shadow p-3 mb-5 bg-light rounded">
-    <h2>@ViewBag.Title </h2>
+    <h2>@ViewBag.Title <span class='badge badge-warning'>$ @billedCustomQueryModels.Sum(m => m.Price)</span>
+</h2>
     <div class="overflow-auto" style="max-height: 600px;">
         <table class="table ">
             <thead>
@@ -69,12 +69,9 @@
 
                         </td>
                         <td class="text-center">
-                            @{
-                                var price = sold * 2 * ((decimal)applicationUser.Percentage / 100);
-                                price = Math.Round(price, 0);
-                                total += price;
-                            }
-                            <span class='badge badge-success'>$ @price</span>
+                            <span class='badge badge-success'>
+                                $ @{ var price = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.Price ?? 0; }@price
+                            </span>
                         </td>
 
                         @if (User.IsInRole("Boss") || User.IsInRole("Administration"))
@@ -89,13 +86,6 @@
                 }
             }
             </tbody>
-            <tfoot>
-            <tr class="text-right">
-                <td colspan="6" class="mr-5">
-                    <bold>Total à payer </bold><span class='badge badge-warning'>$ @total</span>
-                </td>
-            </tr>
-            </tfoot>
         </table>
     </div>
 </div>

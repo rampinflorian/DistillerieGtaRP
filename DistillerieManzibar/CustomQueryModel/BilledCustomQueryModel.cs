@@ -9,5 +9,6 @@ namespace DistillerieManzibar.CustomQueryModel
         public string ApplicationUserId { get; set; }
         public int Quantity { get; set; }
         public DateTime? LastPayementAt { get; set; }
+        public decimal Price { get; set; }
     }
 }

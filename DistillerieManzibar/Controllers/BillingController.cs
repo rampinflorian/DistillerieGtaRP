@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DistillerieManzibar.CustomQueryModel;
 using DistillerieManzibar.Data;
 using DistillerieManzibar.Models;
+using DistillerieManzibar.Services.Stats;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,34 +20,29 @@ namespace DistillerieManzibar.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly Data.Dapper.CustomQuery _customQuery;
+        private readonly StatsService _statsService;
 
-        public BillingController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, Data.Dapper.CustomQuery customQuery)
+        public BillingController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, Data.Dapper.CustomQuery customQuery, StatsService statsService)
         {
             _context = context;
             _userManager = userManager;
             _customQuery = customQuery;
+            _statsService = statsService;
         }
 
         [Route("", Name = "billing.index")]
         public async Task<IActionResult> Index()
         {
-            var sqlTransaction = @"SELECT u.id as ApplicationUserId, SUM(t.quantity) as Quantity, TMP.Date as LastPayementAt
-            FROM [Transaction] t
-                LEFT JOIN AspNetUsers u ON t.ApplicationUserId = u.id
-            LEFT JOIN (SELECT MAX(previous.PayementAt) as Date, u.Id as UserId
-            FROM AspNetUsers u
-                LEFT JOIN [Transaction] previous
-                ON previous.ApplicationUserId = u.id and previous.PayementAt is not null
-            group by u.Id
-                ) as TMP on UserId = ApplicationUserId
-            WHERE t.PayementAt is null
-            Group by u.id, tmp.Date";
+            var applicationUsers = new List<ApplicationUser>();
+            applicationUsers.AddRange(await _userManager.GetUsersInRoleAsync("Boss"));
+            applicationUsers.AddRange(await _userManager.GetUsersInRoleAsync("CoBoss"));
+            applicationUsers.AddRange(await _userManager.GetUsersInRoleAsync("Leader"));
+            applicationUsers.AddRange(await _userManager.GetUsersInRoleAsync("Employee"));
+            applicationUsers.AddRange(await _userManager.GetUsersInRoleAsync("Learner"));
             
-            var notBilledTransaction = await _customQuery.QueryAsync<BilledCustomQueryModel>(sqlTransaction);
-            ViewBag.NotBilledTransaction = notBilledTransaction;
+            ViewBag.NotBilledTransaction = await _statsService.NotBilledTransactionsAsync();
             
-            
-            return View(await _context.ApplicationUsers.OrderByDescending(m => m.Percentage).ToListAsync());
+            return View(applicationUsers);
         }
 
         [Authorize(Roles = "Boss, Administration")]

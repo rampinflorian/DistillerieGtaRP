@@ -49,13 +49,7 @@
             <div class="card-header">Chiffre d'affaire</div>
             <div class="card-body">
                 <h5 class="card-title text-center">
-                    @{
-                        var totalCa = stats.Harvests.Where(m => m.Destination == Destination.Export).Sum(m => m.Quantity) * 2
-                                      + stats.StatsPricingList.Where(m => m.Company.Name == "Hen House").Sum(m => m.Price)
-                                      + stats.StatsPricingList.Where(m => m.Company.Name == "Yellow Jack").Sum(m => m.Price);
-
-                    }
-                    $ @totalCa
+                   $ @ViewBag.CaSum
                 </h5>
                 <p class="card-text">
                     <i>Calculé sur les exports et ventes hors paiement des employés</i>
@@ -63,7 +57,19 @@
             </div>
         </div>
     </div>
-    <div class="col"></div>
+    <div class="col">
+            <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                <div class="card-header">Taxe gouvernement</div>
+                <div class="card-body">
+                    <h5 class="card-title text-center">
+                       $ @ViewBag.GovernmentSum
+                    </h5>
+                    <p class="card-text">
+                        <i>Après salaire des employés déduits uniquement</i>
+                    </p>
+                </div>
+            </div>
+        </div>
     <div class="col">
         <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
             <div class="card-header">Nombre d'employés</div>

@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DistillerieManzibar.Controllers
 {
-    [Authorize(Roles = "Boss, CoBoss")]
+    [Authorize(Roles = "Boss, CoBoss, Administration")]
     [Route("employee")]
     public class EmployeeController : Controller
     {

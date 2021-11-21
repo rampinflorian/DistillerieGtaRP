@@ -15,7 +15,7 @@ namespace DistillerieManzibar.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Learner, Boss, CoBoss, Leader, Employee")]
+        [Authorize(Roles = "Learner, Boss, CoBoss, Leader, Employee, Administration, Government")]
         [Route("API")]
         public async Task<IActionResult> GetCurrentCommandsCount()
         {

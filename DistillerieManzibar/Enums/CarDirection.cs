@@ -5,8 +5,8 @@ namespace DistillerieManzibar.Enums
     public enum CarDirection
     {
         [Display(Name = "Pris")]
-        Get,
+        Get = 0,
         [Display(Name = "Rendu")]
-        Drop,
+        Drop = 1,
     }
 }

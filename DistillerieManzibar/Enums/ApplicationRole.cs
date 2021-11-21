@@ -5,14 +5,22 @@ namespace DistillerieManzibar.Enums
     public enum ApplicationRole
     {
         [Display(Name = "Employé")]
-        Employee,
+        Employee = 1,
         [Display(Name = "Patron")]
-        Boss,
+        Boss = 2,
         [Display(Name = "Chef d'équipe")]
-        Leader,
+        Leader = 3,
         [Display(Name = "Co-Patron")]
-        CoBoss,
+        CoBoss = 4,
         [Display(Name = "Apprenti")]
-        Learner
+        Learner = 5,
+        [Display(Name = "Gouvernement")]
+        Government = 6,
+        [Display(Name = "Administration")]
+        Administration = 7,
+        [Display(Name = "Licencié")]
+        Dismissed = 8
+        
+        
     }
 }

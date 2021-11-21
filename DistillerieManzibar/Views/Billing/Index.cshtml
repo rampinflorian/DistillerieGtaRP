@@ -41,50 +41,52 @@
             @foreach (var applicationUser in Model)
             {
                 var roles = await UserManager.GetRolesAsync(applicationUser);
-                var sold = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.Quantity ?? 0;
-                var lastPayementAt = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.LastPayementAt?.ToString("d") ?? "Jamais payé";
-
-                <tr>
-                    <td class="text-center">
-                        @applicationUser.FullName()
-                        <i>
-                            @foreach (var role in roles)
-                            {
-                                Enum.TryParse(role, out ApplicationRole applicationRole);
-                                var displayApplicationRole = EnumHelper<ApplicationRole>.GetDisplayValue(applicationRole);
-                                <i>(@displayApplicationRole)</i>
-                            }
-                        </i>
-                    </td>
-                    <td class="text-center">
-                        <span class='badge badge-info'>@lastPayementAt</span>
-
-                    </td>
-                    <td class="text-center">
-                        <span class='badge badge-primary'>@sold</span>
-                    </td>
-                    <td class="text-center">
-                        <span class='badge badge-secondary'>@applicationUser.Percentage %</span>
-
-                    </td>
-                    <td class="text-center">
-                        @{
-                            var price = sold * 2 * ((decimal)applicationUser.Percentage / 100);
-                            price = Math.Round(price, 0);
-                            total += price;
-                        }
-                        <span class='badge badge-success'>$ @price</span>
-                    </td>
-
-                    @if (User.IsInRole("Boss"))
-                    {
+                if (roles.First() != "Administration" && roles.First() != "Government" && roles.First() != "Dismissed")
+                {
+                    var sold = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.Quantity ?? 0;
+                    var lastPayementAt = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.LastPayementAt?.ToString("d") ?? "Jamais payé";
+                    <tr>
                         <td class="text-center">
-                            <a asp-action="Payment" asp-route-applicationUserId="@applicationUser.Id">
-                                <button class="btn btn-success btn-sm">Payer</button>
-                            </a>
+                            @applicationUser.FullName()
+                            <i>
+                                @foreach (var role in roles)
+                                {
+                                    Enum.TryParse(role, out ApplicationRole applicationRole);
+                                    var displayApplicationRole = EnumHelper<ApplicationRole>.GetDisplayValue(applicationRole);
+                                    <i>(@displayApplicationRole)</i>
+                                }
+                            </i>
                         </td>
-                    }
-                </tr>
+                        <td class="text-center">
+                            <span class='badge badge-info'>@lastPayementAt</span>
+
+                        </td>
+                        <td class="text-center">
+                            <span class='badge badge-primary'>@sold</span>
+                        </td>
+                        <td class="text-center">
+                            <span class='badge badge-secondary'>@applicationUser.Percentage %</span>
+
+                        </td>
+                        <td class="text-center">
+                            @{
+                                var price = sold * 2 * ((decimal)applicationUser.Percentage / 100);
+                                price = Math.Round(price, 0);
+                                total += price;
+                            }
+                            <span class='badge badge-success'>$ @price</span>
+                        </td>
+
+                        @if (User.IsInRole("Boss") || User.IsInRole("Administration"))
+                        {
+                            <td class="text-center">
+                                <a asp-action="Payment" asp-route-applicationUserId="@applicationUser.Id">
+                                    <button class="btn btn-success btn-sm">Payer</button>
+                                </a>
+                            </td>
+                        }
+                    </tr>
+                }
             }
             </tbody>
             <tfoot>

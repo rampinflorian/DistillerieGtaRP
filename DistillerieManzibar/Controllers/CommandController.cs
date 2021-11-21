@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Identity;
 namespace DistillerieManzibar.Controllers
 {
     [Route("commands")]
-    [Authorize(Roles = "Learner, Boss, CoBoss, Leader, Employee")]
+    [Authorize(Roles = "Learner, Boss, CoBoss, Leader, Employee, Administration")]
     public class CommandController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -163,7 +163,7 @@ namespace DistillerieManzibar.Controllers
         }
 
         [Route("billed/{id:int}", Name = "command.billed")]
-        [Authorize(Roles = "Boss, CoBoss, Leader")]
+        [Authorize(Roles = "Boss, CoBoss, Leader, Administration")]
         public async Task<IActionResult> Billed(int id)
         {
             if (id == 0)

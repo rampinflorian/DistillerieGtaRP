@@ -5,8 +5,8 @@ namespace DistillerieManzibar.Enums
     public enum Destination
     {
         [Display(Name = "Exportation")]
-        Export,
+        Export = 0,
         [Display(Name = "Stock")]
-        Stock
+        Stock = 1
     }
 }

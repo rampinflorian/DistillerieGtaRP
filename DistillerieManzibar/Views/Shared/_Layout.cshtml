@@ -62,23 +62,26 @@
 
                         </a>
                     </li>
-                    @if (User.IsInRole("Boss") || User.IsInRole("CoBoss"))
+                    @if (User.IsInRole("Boss") || User.IsInRole("CoBoss") || User.IsInRole("Government") || User.IsInRole("Administration"))
                     {
                         <li class="nav-item ml-5">
                             <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Statistiques" asp-area="" asp-controller="Stats" asp-action="Index">
                                 <i class="fas fa-chart-line"></i>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Employés" asp-area="" asp-controller="Employee" asp-action="Index">
-                                <i class="fas fa-users"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Paramétrages" asp-area="" asp-controller="Settings" asp-action="Index">
-                                <i class="fas fa-cog"></i>
-                            </a>
-                        </li>
+                        @if (User.IsInRole("Boss") || User.IsInRole("CoBoss") || User.IsInRole("Administration"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Employés" asp-area="" asp-controller="Employee" asp-action="Index">
+                                    <i class="fas fa-users"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Paramétrages" asp-area="" asp-controller="Settings" asp-action="Index">
+                                    <i class="fas fa-cog"></i>
+                                </a>
+                            </li>
+                        }
                     }
                 </ul>
                 <partial name="_LoginPartial"/>

@@ -40,7 +40,7 @@
                             {
                                 Enum.TryParse(role, out ApplicationRole applicationRole);
                                 var displayApplicationRole = EnumHelper<ApplicationRole>.GetDisplayValue(applicationRole);
-                                <span class="badge badge-secondary">
+                                <span class="badge badge-@(role == "Dismissed" ? "warning" : "secondary")">
                                 @displayApplicationRole
                                 </span>
                             }
@@ -50,7 +50,6 @@
                                 <span class="badge badge-danger">
                                     <i>Non attribué</i>
                                     </span>
-
                             }
                     </td>
 
@@ -63,7 +62,5 @@
             }
             </tbody>
         </table>
-
-
     </div>
 </div>

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DistillerieManzibar.Controllers
 {
-    [Authorize(Roles = "Learner, Boss, CoBoss, Leader, Employee")]
+    [Authorize(Roles = "Learner, Boss, CoBoss, Leader, Employee, Administration")]
     [Route("billing")]
     public class BillingController : Controller
     {
@@ -29,7 +29,6 @@ namespace DistillerieManzibar.Controllers
         [Route("", Name = "billing.index")]
         public async Task<IActionResult> Index()
         {
-
             var sqlTransaction = @"SELECT u.id as ApplicationUserId, SUM(t.quantity) as Quantity, TMP.Date as LastPayementAt
             FROM [Transaction] t
                 LEFT JOIN AspNetUsers u ON t.ApplicationUserId = u.id
@@ -49,7 +48,7 @@ namespace DistillerieManzibar.Controllers
             return View(await _context.ApplicationUsers.OrderByDescending(m => m.Percentage).ToListAsync());
         }
 
-        [Authorize(Roles = "Boss")]
+        [Authorize(Roles = "Boss, Administration")]
         [Route("payement/{applicationUserId}", Name = "billing.payement")]
         public async Task<IActionResult> Payment(string applicationUserId)
         {

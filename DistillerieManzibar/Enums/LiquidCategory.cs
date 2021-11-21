@@ -5,8 +5,8 @@ namespace DistillerieManzibar.Enums
     public enum LiquidCategory
     {
         [Display(Name = "Eau")]
-        NoAlcool,
+        NoAlcool = 0,
         [Display(Name = "Alcool")]
-        Alcool
+        Alcool = 1
     }
 }

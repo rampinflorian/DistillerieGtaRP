@@ -8,7 +8,7 @@ using Rotativa.AspNetCore;
 
 namespace DistillerieManzibar.Controllers
 {
-    [Authorize(Roles = "Boss, CoBoss")]
+    [Authorize(Roles = "Boss, CoBoss, Administration, Government")]
     [Route("stats")]
     public class StatsController : Controller
     {

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using DistillerieManzibar.Data;
+using DistillerieManzibar.Forms;
 using DistillerieManzibar.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,12 @@ namespace DistillerieManzibar.Controllers
             ViewData["CompanyId"] = new SelectList(_context.Companies, "CompanyId", "Name");
             ViewBag.Pricings = await _context.Pricings.OrderByDescending(m => m.CreatedAt).ToListAsync();
 
-            return View(new Pricing());
+
+            return View(new SettingsForm()
+            {
+                Parameter = _context.Parameters.First(),
+                Pricing = new Pricing()
+            });
         }
 
         [Route("", Name = "settings.index.post")]
@@ -37,12 +43,32 @@ namespace DistillerieManzibar.Controllers
             ModelState.Remove("CreatedAt");
             if (!ModelState.IsValid)
             {
-                return View(pricing);
+                return View(new SettingsForm()
+                    {
+                        Parameter = _context.Parameters.First(),
+                        Pricing = pricing
+                    }
+                );
             }
 
             pricing.CreatedAt = DateTime.Now;
 
             await _context.AddAsync(pricing);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        
+        [Route("parameter", Name = "settings.parameter.post")]
+        [HttpPost]
+        public async Task<IActionResult> Parameter([Bind("parameterId, News")] Parameter parameter)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            _context.Update(parameter);
             await _context.SaveChangesAsync();
             
             return RedirectToAction(nameof(Index));

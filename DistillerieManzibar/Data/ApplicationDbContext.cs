@@ -17,6 +17,7 @@ namespace DistillerieManzibar.Data
         public DbSet<Command> Commands { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<Pricing> Pricings { get; set; }
+        public DbSet<Parameter> Parameters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

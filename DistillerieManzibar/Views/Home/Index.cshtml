@@ -15,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js" integrity="sha512-Wt1bJGtlnMtGP0dqNFH1xlkLBNpEodaiQ8ZN5JLA5wpc1sUlk/O5uuOMNgvzddzkpvZ9GLyYNa8w2s7rqiTk5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 }
 
-<div class="shadow p-3 mb-5 bg-light rounded">
+<div class="shadow p-3 mb-3 bg-light rounded">
     <h3>Historique transactions sur 7 jours</h3><br/>
 
     <div class="row">
@@ -31,12 +31,9 @@
 </div>
 <div class="shadow p-3 mb-5 bg-light rounded">
     <div class="row">
-        <div class="col-4">
-            <h4 class="mb-3">Répartition des véhicules</h4>
+            <h4 class="mb-3">Informations</h4>
 
             @Html.Raw(Markdown.ToHtml(ViewBag.Parameter.News,pipeline))
-
-        </div>
     </div>
 </div>
 

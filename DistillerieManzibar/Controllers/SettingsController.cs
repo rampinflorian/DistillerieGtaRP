@@ -59,7 +59,7 @@ namespace DistillerieManzibar.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
+
         [Route("parameter", Name = "settings.parameter.post")]
         [HttpPost]
         public async Task<IActionResult> Parameter([Bind("parameterId, News")] Parameter parameter)
@@ -68,8 +68,16 @@ namespace DistillerieManzibar.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
-            _context.Update(parameter);
-            await _context.SaveChangesAsync();
+
+            var parameterToUpdate = _context.Parameters.First();
+
+            if (await TryUpdateModelAsync<Parameter>(
+                parameterToUpdate, "Parameter",
+                m => m.News
+            ))
+            {
+                await _context.SaveChangesAsync();
+            }
             
             return RedirectToAction(nameof(Index));
         }

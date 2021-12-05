@@ -33,10 +33,11 @@
                         <input type="submit" value="Ajouter" class="btn btn-primary btn-sm"/>
                     </div>
                 </form>
-                </div>
+            </div>
             <h4>Nouveau tarif</h4>
             <form asp-controller="Settings" asp-action="Parameter">
                 <div class="form-group">
+                    <input type="hidden" asp-for="Parameter.ParameterId"/>
                     <label asp-for="Parameter.News" class="control-label"></label>
                     <textarea asp-for="Parameter.News" rows="6" class="form-control"></textarea>
                     <span asp-validation-for="Parameter.News" class="text-danger"></span>

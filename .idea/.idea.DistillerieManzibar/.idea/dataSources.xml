@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="DEV_DistillerieManzibar" uuid="bb84b144-2a93-4d41-99cc-1abd0d17206c">
+    <data-source source="LOCAL" name="DistillerieManzibar" uuid="bb84b144-2a93-4d41-99cc-1abd0d17206c">
       <driver-ref>sqlserver.ms</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
       <jdbc-url>jdbc:sqlserver://164.132.56.141;database=db_distilleriemanzibar_dev</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="PROD_DistillerieManzibar" uuid="e2b627ab-158a-4fd5-85c9-54ad28df1a55">
-      <driver-ref>sqlserver.ms</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
-      <jdbc-url>jdbc:sqlserver://164.132.56.141;database=db_distilleriemanzibar_prod</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

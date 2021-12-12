@@ -66,10 +66,14 @@
 
                     </td>
                     <td class="text-center">
-                        @item.BilledAt?.ToString("d")
+                        <div title="@item.BilledAt?.ToString("t")">
+                            @item.BilledAt?.ToString("d")
+                        </div>
                     </td>
                     <td class="text-center">
-                        @item.DeliveryAt?.ToString("d")
+                        <div title="@item.DeliveryAt?.ToString("t")">
+                            @item.DeliveryAt?.ToString("d")
+                        </div>
                     </td>
                     <td class="text-center">
                         @Html.DisplayFor(modelItem => item.Company.Name)
@@ -78,7 +82,7 @@
                         <span class="badge badge-success">$ @price</span>
                     </td>
                     <td class="text-center">
-                        @if ((User.IsInRole("Boss") || User.IsInRole("CoBoss") || User.IsInRole("Leader"))  && item.BilledAt == null)
+                        @if ((User.IsInRole("Boss") || User.IsInRole("CoBoss") || User.IsInRole("Leader")) && item.BilledAt == null)
                         {
                             <a asp-action="Billed" asp-route-id="@item.CommandId">
                                 <button class="btn btn-sm btn-success" title="Payé">
@@ -134,8 +138,11 @@
                         }
                     </td>
                     <td colspan="2">
-                        @if (item.PayementRecipient != null) {
-                            <span class="badge badge-dark"><i class="fas fa-cash-register"></i> @item.PayementRecipient?.FullName()</span>
+                        @if (item.PayementRecipient != null)
+                        {
+                            <span class="badge badge-dark">
+                                <i class="fas fa-cash-register"></i> @item.PayementRecipient?.FullName()
+                            </span>
                         }
                     </td>
                     <td colspan="2">

@@ -63,7 +63,7 @@ namespace DistillerieManzibar.Controllers
                 return NotFound();
             }
 
-            var sqlTransaction = "UPDATE [Transaction] SET PayementAt = current_timestamp WHERE ApplicationUserId = @applicationUserId";
+            var sqlTransaction = "UPDATE [Transaction] SET PayementAt = current_timestamp WHERE ApplicationUserId = @applicationUserId AND PayementAt IS NULL";
             var parameters = new { applicationUserId };
             var transactionWeek = await _customQuery.ExecuteAsync(sqlTransaction, parameters);
             

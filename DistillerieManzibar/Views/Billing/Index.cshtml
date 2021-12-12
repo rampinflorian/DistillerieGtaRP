@@ -23,9 +23,6 @@
                     Employé
                 </th>
                 <th class="text-center">
-                    Paiement
-                </th>
-                <th class="text-center">
                     Solde Livraison
                 </th>
                 <th class="text-center">
@@ -44,7 +41,6 @@
                 if (roles.First() != "Administration" && roles.First() != "Government" && roles.First() != "Dismissed")
                 {
                     var sold = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.Quantity ?? 0;
-                    var lastPayementAt = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.LastPayementAt?.ToString("d") ?? "Jamais payé";
                     <tr>
                         <td class="text-center">
                             @applicationUser.FullName()
@@ -56,10 +52,6 @@
                                     <i>(@displayApplicationRole)</i>
                                 }
                             </i>
-                        </td>
-                        <td class="text-center">
-                            <span class='badge badge-info'>@lastPayementAt</span>
-
                         </td>
                         <td class="text-center">
                             <span class='badge badge-primary'>@sold</span>

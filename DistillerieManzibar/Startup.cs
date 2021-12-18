@@ -37,6 +37,8 @@ namespace DistillerieManzibar
             {
                 if (connectionString != null) options.UseSqlServer(connectionString);
             });
+            
+            // services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()

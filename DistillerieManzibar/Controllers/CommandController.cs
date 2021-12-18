@@ -28,6 +28,7 @@ namespace DistillerieManzibar.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Commands
+                .Where(m => m.CreatedAt > DateTime.Now.Date.AddMonths(-1))
                 .Include(c => c.Company)
                 .Include(m => m.ApplicationUsers)
                 .Include(m => m.Pricing)

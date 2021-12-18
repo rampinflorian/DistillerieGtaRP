@@ -28,7 +28,7 @@ namespace DistillerieManzibar.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.CarLogs = await _context.CarLogs
-                .Where(m => m.CreatedAt > DateTime.Now.Date.AddDays(-1))
+                .Where(m => m.CreatedAt > DateTime.Now.Date.AddMonths(-1))
                 .Include(m => m.ApplicationUser)
                 .Include(m => m.Car)
                 .OrderByDescending(m => m.CreatedAt)

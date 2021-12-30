@@ -64,7 +64,7 @@ body {
 }
 
 body:after {
-  background-image: url("../img/DIST_WPP_hiver.png");
+  background-image: url("../img/DIST_WPP-min.png");
   position:absolute;
   content:"";
   top:0;
@@ -74,7 +74,7 @@ body:after {
   opacity: 0.6;
   background-repeat: no-repeat;
   background-size: cover;
-  z-index:-2;
+  z-index:-1;
   
 }
 .footer {

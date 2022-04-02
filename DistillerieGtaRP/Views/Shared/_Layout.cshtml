@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - DistillerieGtaRP</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <!-- Font Awesome -->
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        rel="stylesheet"/>
+    <!-- MDB -->
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.css"
+        rel="stylesheet"/>
+    @await RenderSectionAsync("Styles", required: false)
+
+
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DistillerieGtaRP</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Dashboard" asp-area="" asp-controller="Home" asp-action="Index">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Transactions" asp-area="" asp-controller="Transaction" asp-action="Index">
+                            <i class="fas fa-ship"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Véhicules" asp-area="" asp-controller="Car" asp-action="Index">
+                            <i class="fas fa-car"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Facturation" asp-area="" asp-controller="Billing" asp-action="Index">
+                            <i class="fas fa-money-bill-alt"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Commandes" asp-area="" asp-controller="Command" asp-action="Index">
+                            <i class="fas fa-people-carry"></i>
+                            <span id="command-id" class="badge rounded-pill badge-notification bg-danger" style="visibility: hidden"></span>
+
+                        </a>
+                    </li>
+                    @if (User.IsInRole("Boss") || User.IsInRole("CoBoss") || User.IsInRole("Government") || User.IsInRole("Administration"))
+                    {
+                        <li class="nav-item ml-5">
+                            <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Statistiques" asp-area="" asp-controller="Stats" asp-action="Index">
+                                <i class="fas fa-chart-line"></i>
+                            </a>
+                        </li>
+                        @if (User.IsInRole("Boss") || User.IsInRole("CoBoss") || User.IsInRole("Administration"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Employés" asp-area="" asp-controller="Employee" asp-action="Index">
+                                    <i class="fas fa-users"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Paramétrages" asp-area="" asp-controller="Settings" asp-action="Index">
+                                    <i class="fas fa-cog"></i>
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+                <partial name="_LoginPartial"/>
+            </div>
+        </div>
+    </nav>
+</header>
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="mb-3" style="text-align: center;" >
+            <a  href="https://top-serveurs.net/gta/the-last-hope">
+                <img src="https://cdn.top-serveurs.net/banners/621e0b941e513.gif" alt="Logo" class="img-fluid" style="max-width: 100%; height: auto;">
+            </a>
+        </div>
+        @RenderBody()
+    </main>
+</div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2021 - DistillerieGtaRP GTARP - Created by <a href="https://www.florianrampin.fr">Capuchon</a> - <a asp-area="" asp-controller="Home" asp-action="Privacy">Informations</a>
+    </div>
+</footer>
+<script >
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+</script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+$.ajax({
+        type: "GET",
+        url: "@Url.Action("GetCurrentCommandsCount", "Api")",
+        success: function(result){
+            var elem = document.getElementById("command-id")
+            if (result > 0)
+            elem.style.visibility = "visible";
+            elem.innerHTML = result
+        }
+    });
+</script>
+<script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+<link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    rel="stylesheet"/>
+<!-- MDB -->
+<script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

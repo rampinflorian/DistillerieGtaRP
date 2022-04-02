@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DistillerieGtaRP.Enums
+@using DistillerieGtaRP.Helpers
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Gestion des employés";
+}
+
+<div class="shadow p-3 mb-5 bg-light rounded">
+    <h1>@ViewData["Title"]</h1>
+    <div class="d-flex flex-row-reverse">
+    </div>
+    <div class="overflow-auto" style="max-height: 600px;">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>
+                    Employé
+                </th>
+                <th>
+                    Informations
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (ApplicationUser item in ViewBag.ApplicationUsers)
+            {
+                var roles = await UserManager.GetRolesAsync(item);
+
+                <tr>
+                    <td>
+                        @item.FullName()
+                    </td>
+                    <td>
+                        <span class="badge badge-primary">@item.Percentage %</span>
+                            @if(roles.Count > 0) {
+                            @foreach (var role in roles)
+                            {
+                                Enum.TryParse(role, out ApplicationRole applicationRole);
+                                var displayApplicationRole = EnumHelper<ApplicationRole>.GetDisplayValue(applicationRole);
+                                <span class="badge badge-@(role == "Dismissed" ? "warning" : "secondary")">
+                                @displayApplicationRole
+                                </span>
+                            }
+                            }
+                            else
+                            {
+                                <span class="badge badge-danger">
+                                    <i>Non attribué</i>
+                                    </span>
+                            }
+                    </td>
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">
+                            <button class="btn btn-primary btn-sm">Editer</button>
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

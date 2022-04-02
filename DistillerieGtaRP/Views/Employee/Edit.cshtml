@@ -1,0 +1,41 @@
+﻿@using DistillerieGtaRP.Helpers
+@using DistillerieGtaRP.Enums
+@model DistillerieGtaRP.FormsCustom.ApplicationUserFormCustom
+
+@{
+    ViewBag.Title = "Employé édition" + Model.ApplicationUser.FullName();
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="shadow p-3 mb-5 bg-light rounded">
+            <h1>Edition</h1>
+            <h4>@Model.ApplicationUser.FullName()</h4>
+            <hr/>
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ApplicationUser.Id"/>
+                
+                <div class="form-group">
+                    <label asp-for="ApplicationUser.Percentage" class="control-label"></label>
+                    <input asp-for="ApplicationUser.Percentage" class="form-control"/>
+                    <span asp-validation-for="ApplicationUser.Percentage" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ApplicationRole" class="control-label"></label>
+                    <select asp-for="ApplicationRole" class="form-control" asp-items="@Html.GetEnumSelectList<ApplicationRole>()"></select>
+                    <span asp-validation-for="ApplicationRole" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary"/>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

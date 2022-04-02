@@ -1,0 +1,83 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DistillerieGtaRP.Enums
+@using DistillerieGtaRP.Helpers
+@using DistillerieGtaRP.CustomQueryModel
+@model List<DistillerieGtaRP.Models.ApplicationUser>
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewBag.Title = "Facturation";
+    Layout = "_Layout";
+
+    List<BilledCustomQueryModel> billedCustomQueryModels = ViewBag.NotBilledTransaction;
+}
+
+<div class="shadow p-3 mb-5 bg-light rounded">
+    <h2>@ViewBag.Title <span class='badge badge-warning'>$ @billedCustomQueryModels.Sum(m => m.Price)</span>
+</h2>
+    <div class="overflow-auto" style="max-height: 600px;">
+        <table class="table ">
+            <thead>
+            <tr>
+                <th class="text-center">
+                    Employé
+                </th>
+                <th class="text-center">
+                    Solde Livraison
+                </th>
+                <th class="text-center">
+                    Taux
+                </th>
+                <th class="text-center">
+                    Salaire
+                </th>
+                <th class="text-center"></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var applicationUser in Model)
+            {
+                var roles = await UserManager.GetRolesAsync(applicationUser);
+                if (roles.First() != "Administration" && roles.First() != "Government" && roles.First() != "Dismissed")
+                {
+                    var sold = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.Quantity ?? 0;
+                    <tr>
+                        <td class="text-center">
+                            @applicationUser.FullName()
+                            <i>
+                                @foreach (var role in roles)
+                                {
+                                    Enum.TryParse(role, out ApplicationRole applicationRole);
+                                    var displayApplicationRole = EnumHelper<ApplicationRole>.GetDisplayValue(applicationRole);
+                                    <i>(@displayApplicationRole)</i>
+                                }
+                            </i>
+                        </td>
+                        <td class="text-center">
+                            <span class='badge badge-primary'>@sold</span>
+                        </td>
+                        <td class="text-center">
+                            <span class='badge badge-secondary'>@applicationUser.Percentage %</span>
+
+                        </td>
+                        <td class="text-center">
+                            <span class='badge badge-success'>
+                                $ @{ var price = billedCustomQueryModels.FirstOrDefault(m => m.ApplicationUserId == applicationUser.Id)?.Price ?? 0; }@price
+                            </span>
+                        </td>
+
+                        @if (User.IsInRole("Boss") || User.IsInRole("Administration"))
+                        {
+                            <td class="text-center">
+                                <a asp-action="Payment" asp-route-applicationUserId="@applicationUser.Id">
+                                    <button class="btn btn-success btn-sm">Payer</button>
+                                </a>
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
